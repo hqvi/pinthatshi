@@ -3,10 +3,17 @@ import { readFile } from 'node:fs/promises';
 import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '../docs/wireframes');
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '../docs');
 const host = '127.0.0.1';
 const port = 4173;
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript' };
+const types = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.md': 'text/plain; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.ttf': 'font/ttf',
+};
 
 const server = createServer(async (request, response) => {
   if (!['GET', 'HEAD'].includes(request.method)) {
@@ -16,7 +23,12 @@ const server = createServer(async (request, response) => {
   }
   try {
     const pathname = decodeURIComponent(new URL(request.url, `http://${host}:${port}`).pathname);
-    const target = resolve(root, `.${pathname === '/' ? '/index.html' : pathname}`);
+    if (pathname === '/') {
+      response.writeHead(302, { Location: '/wireframes/' });
+      response.end();
+      return;
+    }
+    const target = resolve(root, `.${pathname.endsWith('/') ? `${pathname}index.html` : pathname}`);
     if (target !== root && !target.startsWith(`${root}${sep}`)) {
       response.writeHead(403);
       response.end('Forbidden');
@@ -24,7 +36,7 @@ const server = createServer(async (request, response) => {
     }
     const data = await readFile(target);
     response.writeHead(200, {
-      'Content-Type': `${types[extname(target)] || 'application/octet-stream'}; charset=utf-8`,
+      'Content-Type': types[extname(target)] || 'application/octet-stream',
       'Cache-Control': 'no-store',
       'X-Content-Type-Options': 'nosniff',
     });
@@ -41,5 +53,6 @@ server.on('error', (error) => {
 });
 server.listen(port, host, () => {
   console.log(`pinthatshi wireframes: http://${host}:${port}`);
+  console.log(`Visual reference: http://${host}:${port}/style-guide/`);
   console.log('Press Ctrl+C to stop.');
 });

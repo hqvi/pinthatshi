@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Measured typography, colors, and pixel-grid sprite examples for pinthatshi's Farflung visual reference.">
+  <title>pinthatshi · visual reference</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#reference">Skip to visual reference</a>
+  <header class="review-bar">
+    <a href="../wireframes/index.html">Back to approved wireframes</a>
+    <span>pinthatshi / visual direction</span>
+  </header>
+
+  <main id="reference" class="reference-book">
+    <div class="book-header"><span>DESIGN REFERENCE</span><span>20 NOVEMBER 2026</span></div>
+    <section class="introduction">
+      <span class="eyebrow">From layout to artwork</span>
+      <h1>The atlas comes next.</h1>
+      <p>The wireframes settled the layout. These are the actual font families and measured colors from Farflung, with recreated surface effects and original pixel-grid examples.</p>
+      <p class="fine-print">Reference sheet, not a finished game screen. The detailed map and complete 1:1 interface still need implementation and comparison.</p>
+    </section>
+
+    <div class="reference-grid">
+      <section class="type-section" aria-labelledby="type-title">
+        <span class="eyebrow">Type and interface</span>
+        <h2 id="type-title">Learn Countries</h2>
+        <p class="type-caption">BUNGEE · section titles · blue offset shadow</p>
+        <div class="prompt-sample">
+          <div class="sample-topline"><span>2 OF 12 · SAMPLE</span><span>TIME 0:24</span></div>
+          <p class="country-prompt">Find Philippines</p>
+          <p>Learn the countries of the world.</p>
+        </div>
+        <p class="type-caption">VT323 · prompts, descriptions, controls, labels</p>
+        <div class="button-samples" aria-label="Button appearance samples">
+          <span class="sample-button sample-red">Hint</span>
+          <span class="sample-button sample-navy">Play &amp; Learn</span>
+          <span class="sample-button">Back to Home</span>
+        </div>
+        <p class="section-note">Square edges, fine ink lines, and hard shadows. These samples show appearance and are not interactive controls.</p>
+      </section>
+
+      <section class="surface-section" aria-labelledby="surface-title">
+        <span class="eyebrow">Paper, water, and coast</span>
+        <h2 id="surface-title">The measured palette</h2>
+        <div class="surface-samples">
+          <div class="paper-sample"><span>PARCHMENT</span><strong>#F4E9CD</strong></div>
+          <div class="water-sample"><span>CHART WATER</span><strong>#A9C3C9</strong></div>
+        </div>
+        <div class="coast-bands" aria-label="Coastal palette: sea, shallows, inner coastal band, and land">
+          <span class="band-sea">SEA</span><span class="band-shallow">SHALLOW</span><span class="band-shoal">SHOAL</span><span class="band-land">LAND</span>
+        </div>
+        <div class="palette-grid">
+          <div><i class="swatch ink"></i><span>Ink<br><code>#2B2118</code></span></div>
+          <div><i class="swatch land"></i><span>Land<br><code>#ECDFB9</code></span></div>
+          <div><i class="swatch red"></i><span>Red<br><code>#C0362D</code></span></div>
+          <div><i class="swatch navy"></i><span>Navy<br><code>#24394C</code></span></div>
+          <div><i class="swatch gold"></i><span>Gold<br><code>#F2C14E</code></span></div>
+          <div><i class="swatch pencil"></i><span>Pencil<br><code>#B9A67E</code></span></div>
+        </div>
+        <p class="section-note">These textures are recreated samples. The real map will retain detailed geographic boundaries; it won't receive a blanket pixelation filter.</p>
+      </section>
+    </div>
+
+    <section class="sprite-section" aria-labelledby="sprite-title">
+      <div class="sprite-heading"><div><span class="eyebrow">Small objects, deliberately drawn</span><h2 id="sprite-title">A consistent pixel grid</h2></div><p>Original construction examples.<br>Farflung's souvenir paths are not copied.</p></div>
+      <div class="sprite-grid">
+        <figure class="sprite-cell">
+          <div class="sprite-stage"><img src="sprites/notebook.svg" width="48" height="48" alt="Pixel notebook with a red cover and cream page lines"></div>
+          <figcaption>Notebook<span>16 × 16 grid · 3×</span></figcaption>
+        </figure>
+        <figure class="sprite-cell">
+          <div class="sprite-stage"><img src="sprites/compass.svg" width="48" height="48" alt="Pixel compass with an ink outline and red north pointer"></div>
+          <figcaption>Compass<span>16 × 16 grid · 3×</span></figcaption>
+        </figure>
+        <figure class="sprite-cell">
+          <div class="sprite-stage"><img src="sprites/france.svg" width="72" height="48" alt="France flag pixel example with blue, white, and red vertical stripes"></div>
+          <figcaption>France flag<span>24 × 16 grid · 3×</span></figcaption>
+        </figure>
+        <figure class="sprite-cell">
+          <div class="sprite-stage"><img src="sprites/japan.svg" width="72" height="48" alt="Japan flag pixel example with a stepped red disc on white"></div>
+          <figcaption>Japan flag<span>24 × 16 grid · 3×</span></figcaption>
+        </figure>
+      </div>
+      <div class="sprite-notes"><p><strong>Pixel art:</strong> small objects, pins, flag artwork, stamps, and suitable icons. Use crisp integer scaling and recognizable silhouettes.</p><p><strong>Detailed geography:</strong> accurate coastlines and country boundaries, with texture and fine outlines. Panels and layout remain sharp at the browser's normal resolution.</p></div>
+      <p class="fine-print">Flag samples illustrate the grid treatment. Production flags will be verified individually, with larger source grids where an emblem needs more detail.</p>
+    </section>
+
+    <footer class="next-step"><span class="eyebrow">Next / v0.2</span><p>Build the application shell and match the area-picker screen first. Then compare the map, spacing, typography, and textures against Farflung at the same viewport size.</p><a href="../visual-direction.md">Read the visual specification</a></footer>
+  </main>
+</body>
+</html>

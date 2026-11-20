@@ -11,6 +11,8 @@ Find countries, remember capitals, recognize flags, and eventually learn the reg
 - [Game design and complete mode catalog](docs/game-design.md)
 - [Version roadmap and how we'll build](docs/roadmap.md)
 - [Wireframe guide](docs/wireframes.md)
+- [Visual direction and sprite rules](docs/visual-direction.md)
+- [Actual font and color reference sheet](docs/style-guide/index.html)
 - [Farflung design inspection](docs/farflung-design-audit.md)
 
 ## Open the wireframes
@@ -26,6 +28,8 @@ node scripts/preview.mjs
 Then visit the local address printed in the terminal. Press `Ctrl+C` in that terminal to stop the preview.
 
 The walkthrough includes Home, Games, Areas, Play, and Results. It uses illustrative content and map placeholders. Buttons demonstrate navigation; they don't check geography answers or save progress yet.
+
+The wireframe colors and system fonts are temporary. The [visual reference sheet](docs/style-guide/index.html) uses locally bundled VT323 and Bungee, the measured Farflung palette, and original pixel-grid object/flag examples. With the preview running, open `/style-guide/` to see it. This is preparation for v0.2, not a completed map or 1:1 application.
 
 ## First playable milestone
 

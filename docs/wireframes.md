@@ -33,6 +33,8 @@ Only Find Countries has an area/play walkthrough in this checkpoint. Other game 
 
 The Farflung-style textures, actual pixel fonts, detailed coastlines, map interaction, geographic data, answer checking, records, and sound are subsequent implementation work. This wireframe palette only distinguishes map, paper, and controls; it is not the final art pass.
 
+The layout is now approved. See the [visual reference sheet](style-guide/index.html) for locally bundled VT323/Bungee, measured colors, recreated surface samples, and original grid-based sprite examples. The walkthrough header links to that sheet without changing the approved screen layouts.
+
 ## Review checklist
 
 - Can you understand where to start without instructions?

@@ -1,0 +1,46 @@
+/* Measured Farflung reference values. Application components will reuse these. */
+@font-face {
+  font-family: "VT323";
+  src: url("fonts/VT323-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bungee";
+  src: url("fonts/Bungee-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --font-pixel: "VT323", ui-monospace, monospace;
+  --font-heading: "Bungee", var(--font-pixel);
+  --paper: #f4e9cd;
+  --card: #f8f0dc;
+  --ink: #2b2118;
+  --ink-2: #6a583f;
+  --pencil: #b9a67e;
+  --sea: #a9c3c9;
+  --land: #ecdfb9;
+  --land-shade: #e4d5a9;
+  --land-light: #f3e8c8;
+  --coast: #3a2c1d;
+  --shallow: #b7ced1;
+  --shoal: #c7dad9;
+  --wave: #4868746b;
+  --red: #c0362d;
+  --gold: #f2c14e;
+  --navy: #24394c;
+  --desk: #573923;
+  --type-heading: 2.34375rem;
+  --type-body: 1.171875rem;
+  --type-figure: 1.5625rem;
+  --type-label: .9375rem;
+  --type-fine: .78125rem;
+  --line-body: 1.5625rem;
+  --tracking-label: .12em;
+  --bevel: 0 0 0 1px var(--ink), 2px 2px 0 1px var(--ink);
+}

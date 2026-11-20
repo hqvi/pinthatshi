@@ -93,6 +93,10 @@ small{
 .review-header>p{
   margin:8px 0 18px
 }
+.review-header>p a{
+  color:var(--ink);
+  text-underline-offset:3px
+}
 .screen-nav{
   display:flex;
   gap:6px;

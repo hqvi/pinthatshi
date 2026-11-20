@@ -1,10 +1,12 @@
 # pinthatshi: game design
 
-Status: agreed project direction; implementation has not started.
+Status: wireframe layout approved; visual reference established. The playable application has not started.
 
 ## The idea
 
 A map-first geography playground that makes it enjoyable to learn where places are, what they're called, their capitals, and their flags. Keep the Farflung Learn Countries visual direction: parchment panels, pixel text, blue oceans, fine coastlines, textured surfaces, and region cards.
+
+**Visual requirement:** target a 1:1 match to Farflung's Learn Countries interface, not a generic retro reinterpretation. The approved wireframes establish layout only. Replace their placeholder colors and fonts with the measured system. Use souvenir-style, crisp pixel-grid sprites selectively for objects and flags while preserving detailed map geometry. See the [visual direction](visual-direction.md) and [reference sheet](style-guide/index.html).
 
 The first playable version covers Find Countries worldwide. Everything is freely selectable, with suggested learning paths from smaller regions to larger challenges.
 

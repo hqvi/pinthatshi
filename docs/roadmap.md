@@ -38,7 +38,7 @@ Versions describe order and scope, not promised dates. Don't add later features 
 
 ## Immediate next steps after v0.1
 
-1. Walk through the five wireframes together and refine screen placement.
+1. Preserve the approved five-screen wireframe layout; apply the [measured visual direction](visual-direction.md) and review the font/color/sprite reference sheet.
 2. Scaffold React, TypeScript, and Vite without replacing the project history or documents.
 3. Establish the frame, typography, panel components, and responsive layout.
 4. Add the real map and atlas effects, comparing world and regional screenshots.
@@ -69,3 +69,11 @@ Hosting is a later milestone. The initial source of truth is this GitHub reposit
 - Checked navigation, area selection, coverage switching, sample results, and replay in the browser.
 - Checked all five layouts at a 390px phone width without horizontal overflow, plus the normal desktop layout. Fixed map-label spacing, screen-change scrolling, and skip-link behavior.
 - JavaScript syntax and local documentation links pass checks; no browser console errors were observed. This verifies the walkthrough, not the future game rules or map data.
+
+### 2026-11-20 — Visual direction
+
+- The user approved the wireframes and reaffirmed a 1:1 Farflung visual target.
+- Documented selective pixel art: grid-based objects and flags, with detailed geographic geometry.
+- Inspected the Souvenirs screen: observed 16 x 16 SVG sprites displayed at 48 x 48 with crisp edges.
+- Added a reference sheet for measured typography and colors, independently recreated textures, and original sprite examples. The complete application and map remain future milestones.
+- Checked the reference sheet on desktop and at 390px width: assets load, the measured heading values match, sprite dimensions stay at integer scaling, and no horizontal overflow or console errors were observed. Confirmed the link back to the approved wireframes.

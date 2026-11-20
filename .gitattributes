@@ -1,1 +1,3 @@
 * text=auto eol=lf
+# Preserve upstream font notices, including their original whitespace.
+docs/style-guide/fonts/*-OFL.txt -text whitespace=-blank-at-eol

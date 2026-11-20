@@ -2,6 +2,8 @@
 
 Inspected 20 November 2026 at https://farflung.game/learn-countries.
 
+Follow-up: the wireframes are approved, and the user reaffirmed a 1:1 visual target. The [visual direction](visual-direction.md) records the sprite investigation and selective pixel-art requirement. Wireframe colors and system fonts are not the final design.
+
 ## Target agreed with the user
 
 Use Farflung's Learn Countries screen as the close visual reference. Discard the generated colored-terrain concept. Preserve the parchment-and-blue atlas appearance, pixel typography, thin ink borders, textured surfaces, and map-first layout. Further geography learning modes come after the design is established.
