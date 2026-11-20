@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Five layout wireframes for pinthatshi, a geography learning game being built one version at a time.">
+  <title>pinthatshi · screen wireframes</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="wireframes.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#screens">Skip to the wireframe</a>
+  <header class="review-header">
+    <div class="review-brand"><strong>pinthatshi</strong><span>v0.1 / layout wireframes</span></div>
+    <p>Five screens to plan the experience. Sample content; no live geography or scoring.</p>
+    <nav class="screen-nav" aria-label="Wireframe screens">
+      <button type="button" data-screen="home" aria-current="page"><span>01</span> Home</button>
+      <button type="button" data-screen="games"><span>02</span> Games</button>
+      <button type="button" data-screen="areas"><span>03</span> Areas</button>
+      <button type="button" data-screen="play"><span>04</span> Play</button>
+      <button type="button" data-screen="results"><span>05</span> Results</button>
+    </nav>
+  </header>
+
+  <main id="screens" class="atlas-window">
+    <section data-panel="home" aria-labelledby="home-title">
+      <div class="game-header"><span class="wordmark">pinthatshi</span><span class="small-label">A little more of the world, every time.</span></div>
+      <div class="home-scene map-slot">
+        <div class="map-note home-map-note"><span class="crosshair" aria-hidden="true">+</span><span>WORLD ATLAS</span><small>Interactive map goes here</small></div>
+        <div class="home-card paper-card">
+          <span class="eyebrow">Your geography playground</span>
+          <h1 id="home-title" tabindex="-1">pinthatshi</h1>
+          <p>Find places. Learn their names.<br>Get to know your world.</p>
+          <button type="button" class="button primary" data-go="games">Play &amp; Learn</button>
+          <div class="home-categories"><span>Countries</span><span>Capitals</span><span>Flags</span></div>
+        </div>
+        <span class="map-caption">MAP AREA · PAN / ZOOM</span>
+      </div>
+    </section>
+
+    <section data-panel="games" aria-labelledby="games-title" hidden>
+      <div class="game-header"><button type="button" class="text-button" data-go="home">Back to Home</button><span class="small-label">Choose what to practice</span></div>
+      <div class="library">
+        <div class="section-heading"><span class="eyebrow">The game library</span><h1 id="games-title" tabindex="-1">What will you learn?</h1><p>Start anywhere. Every area will be open to explore.</p></div>
+        <div class="collection-grid">
+          <article class="collection"><div class="collection-title"><span class="collection-icon" aria-hidden="true">+</span><h2>Countries</h2></div><p>Learn the map, one place at a time.</p><button type="button" class="mode featured" data-go="areas"><span><strong>Find Countries</strong><small>Read a name. Find it on the map.</small></span><span class="mode-badge">First build</span></button><ul class="mode-list"><li>Name All Countries</li><li>Name the Country</li><li>Name the Country: Silhouette</li></ul></article>
+          <article class="collection"><div class="collection-title"><span class="collection-icon" aria-hidden="true">◇</span><h2>Capitals</h2></div><p>Connect countries and their capital cities.</p><ul class="mode-list"><li>Find Capitals</li><li>Pin Capitals <span class="inline-note">city locations</span></li><li>Name All Capitals</li><li>Name the Capital</li></ul><span class="future-label">Planned collection</span></article>
+          <article class="collection"><div class="collection-title"><span class="collection-icon" aria-hidden="true">⚑</span><h2>Flags</h2></div><p>Put a flag to a place.</p><ul class="mode-list"><li>Map the Flag</li><li>Name the Flag</li><li>Match the Flag</li><li>Name All Flags</li></ul><span class="future-label">Planned collection</span></article>
+        </div>
+        <div class="library-bottom"><article class="pack-strip"><div><span class="eyebrow">Country Packs</span><h2>Closer to home</h2><p>Philippine regions and provinces first. USA and UK follow.</p></div><span class="future-label">Planned</span></article><article class="review-strip"><span class="eyebrow">Review Mistakes</span><h2>Make it stick</h2><p>Your missed places will become your next practice.</p></article></div>
+      </div>
+    </section>
+
+    <section data-panel="areas" aria-labelledby="areas-title" hidden>
+      <div class="game-header"><button type="button" class="text-button" data-go="games">Back to Games</button><span class="small-label">Find Countries</span></div>
+      <div class="map-and-panel area-layout">
+        <div class="map-slot area-map"><div class="map-note"><span class="crosshair" aria-hidden="true">+</span><span data-map-scope>WORLD ATLAS</span><small>Preview the selected area here</small></div><span class="map-caption">BOUNDARIES · PAN / ZOOM</span></div>
+        <aside class="side-panel area-panel">
+          <div class="panel-intro"><span class="eyebrow">Find Countries</span><h1 id="areas-title" tabindex="-1">Choose your area</h1><p>Try a smaller region, a whole continent, or everything.</p><label class="coverage-option"><input id="include-areas" type="checkbox" checked><span>Include territories &amp; overseas areas<small>Countries &amp; Areas</small></span></label></div>
+          <div class="area-scroll">
+            <h2 class="area-heading">Asia</h2>
+            <div class="area-grid">
+              <button type="button" class="area-card" data-area="Western Asia"><span class="mini-map">REGION MAP</span><span class="area-card-label">Western Asia</span></button>
+              <button type="button" class="area-card" data-area="Central Asia"><span class="mini-map">REGION MAP</span><span class="area-card-label">Central Asia</span></button>
+              <button type="button" class="area-card" data-area="Southern Asia"><span class="mini-map">REGION MAP</span><span class="area-card-label">Southern Asia</span></button>
+              <button type="button" class="area-card" data-area="Eastern Asia"><span class="mini-map">REGION MAP</span><span class="area-card-label">Eastern Asia</span></button>
+              <button type="button" class="area-card" data-area="South-Eastern Asia"><span class="mini-map">REGION MAP</span><span class="area-card-label">South-Eastern Asia</span></button>
+              <button type="button" class="area-card continent-card" data-area="Asia"><span class="mini-map">CONTINENT MAP</span><span class="area-card-label">All Asia</span></button>
+            </div>
+            <h2 class="area-heading">Other continents</h2>
+            <div class="continent-links"><button type="button" data-area="Africa">Africa</button><button type="button" data-area="Europe">Europe</button><button type="button" data-area="North America">North America</button><button type="button" data-area="South America">South America</button><button type="button" data-area="Oceania">Oceania</button></div>
+            <h2 class="area-heading">Everything</h2>
+            <button type="button" class="area-card world-card" data-area="The World"><span class="mini-map">WORLD MAP</span><span class="area-card-label">The World</span></button>
+            <p class="fine-note">Asia demonstrates the full card hierarchy here. Every continent gets its subregion cards in the application.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section data-panel="play" aria-labelledby="play-title" hidden>
+      <div class="game-header"><button type="button" class="text-button" data-go="areas">Back to Areas</button><span class="small-label" data-selected-area>The World</span></div>
+      <div class="map-and-panel play-layout">
+        <div class="map-slot play-map"><div class="map-note"><span class="crosshair" aria-hidden="true">+</span><span>SELECT A COUNTRY</span><small>Country shapes and selection feedback go here</small></div><div class="map-tools" aria-label="Map control positions"><span>+</span><span>−</span><span class="fit-map">Fit area</span></div><span class="map-caption">COUNTRY BOUNDARIES · COORDINATE GRID</span></div>
+        <aside class="side-panel play-panel">
+          <div class="round-header"><div><span class="eyebrow">Time</span><strong>0:24</strong></div><div class="progress-block"><span class="progress-ticks" aria-hidden="true">■■□□□□□□□□□□</span><span class="eyebrow">Sample progress</span></div></div>
+          <div class="question-block"><span class="eyebrow">Find Countries</span><h1 id="play-title" tabindex="-1">Find Brazil</h1><span class="coverage-readout" data-coverage-label>Countries &amp; Areas</span></div>
+          <div class="answer-lists"><h2>Found <span>2</span></h2><ul class="found-list"><li><i class="place-dot dot-one" aria-hidden="true"></i>Japan</li><li><i class="place-dot dot-two" aria-hidden="true"></i>Kenya</li></ul><h2>Still to find</h2><ul class="remaining-list"><li>Brazil</li><li>Canada</li><li>France</li><li>Philippines</li></ul><p class="fine-note">The application lists the places in your chosen area. These are sample entries.</p></div>
+          <div class="play-actions"><button type="button" class="button primary" disabled>Hint</button><small>Hint and map selection arrive with the playable game.</small></div>
+        </aside>
+      </div>
+    </section>
+
+    <section data-panel="results" aria-labelledby="results-title" hidden>
+      <div class="game-header"><button type="button" class="text-button" data-go="games">Back to Games</button><span class="small-label">Sample session results</span></div>
+      <div class="results-layout"><div class="map-slot result-map"><div class="map-note"><span class="crosshair" aria-hidden="true">+</span><span>YOUR COMPLETED MAP</span><small>Found and assisted places shown together</small></div></div><aside class="side-panel results-panel"><span class="eyebrow">Find Countries · sample session</span><h1 id="results-title" tabindex="-1">A little more learned.</h1><p data-selected-area>The World</p><div class="stat-grid"><div><span>Completed</span><strong>12 / 12</strong></div><div><span>Time</span><strong>2:34</strong></div><div><span>First try</span><strong>10 / 12</strong></div><div><span>Hints</span><strong>1</strong></div></div><div class="review-summary"><h2>Worth another look</h2><p>Brazil · needed a hint<br>Canada · missed on the first try</p></div><div class="result-actions"><button type="button" class="button primary" disabled>Review 2 places</button><button type="button" class="button" data-go="play">Play Again</button><button type="button" class="text-button" data-go="areas">Choose Another Area</button></div><p class="fine-note">Review and records will be connected to actual sessions in later versions.</p></aside></div>
+    </section>
+  </main>
+
+  <footer class="review-footer"><p id="screen-description" aria-live="polite">Home: a map-first welcome and one clear way to start.</p><button type="button" id="sample-results" data-go="results" hidden>Walkthrough: show sample results</button><span>Layout first. Atlas artwork next.</span></footer>
+  <noscript><p class="noscript-note">Enable JavaScript to switch screens. The Home wireframe remains visible above.</p></noscript>
+</body>
+</html>
