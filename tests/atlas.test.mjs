@@ -2,9 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { coordinateLabel, gridStep, gridValues, longitudeInterval } from '../src/map/grid.ts';
-import { inScope, normalizeAnswer } from '../src/map/scope.ts';
+import { inScope, normalizeAnswer, primaryContinent } from '../src/map/scope.ts';
 import { scopeColors, palette } from '../src/map/palette.ts';
-import { allAreas, findArea, world } from '../src/data/areas.ts';
+import { aidOpacity, containsPoint, shapeMetrics, framing } from '../src/map/geometry.ts';
+import { borderLines } from '../src/map/borders.ts';
+import { directionAngle } from '../src/map/feedback.ts';
+import { allAreas, findArea, world, continents } from '../src/data/areas.ts';
 
 const geography = JSON.parse(await readFile(new URL('../src/assets/places.geojson', import.meta.url), 'utf8'));
 const get = id => geography.features.find(f => f.id === id)?.properties;
@@ -92,4 +95,58 @@ test('physical coast paths use finite coordinates and fit the renderer line-mesh
     assert.ok(feature.geometry.coordinates.length >= 2 && feature.geometry.coordinates.length * 10 < 65535);
     assert.ok(feature.geometry.coordinates.every(([x, y]) => Number.isFinite(x) && Number.isFinite(y) && Math.abs(x) <= 180 && Math.abs(y) <= 90));
   }
+});
+
+test('the 22-map picker matches reference countries and continent totals with no missing primary continent', () => {
+  assert.equal(allAreas.length, 22);
+  assert.deepEqual(allAreas.slice(0,3).map(a=>a.id),['north-central-america','caribbean','south-america']);
+  const counts = { 'north-central-america':10, caribbean:13, 'south-america':12, europe:45, asia:49, africa:54, oceania:14, world:197 };
+  for (const [id,count] of Object.entries(counts)) assert.equal(geography.features.filter(f => inScope(f.properties, findArea(id), false)).length, count, id);
+  for (const feature of geography.features) {
+    assert.ok(primaryContinent(feature.id), feature.id);
+    assert.equal(continents.filter(c => inScope(feature.properties,c.area,true)).length,1,feature.id);
+  }
+  assert.equal(inScope(get('MDV'),findArea('asia'),false),true);
+  assert.equal(findArea('central-america').id,'north-central-america');
+  assert.equal(findArea('polynesia').id,'oceania');
+});
+test('selection aids anchor on actual geometry, fade with country footprint and disappear at maximum zoom', () => {
+  for (const feature of geography.features) {
+    const metrics = shapeMetrics(feature);
+    assert.ok(containsPoint(feature,metrics.anchor),feature.id);
+    assert.ok(metrics.size > 0 && metrics.bounds.every(Number.isFinite),feature.id);
+  }
+  assert.equal(aidOpacity(.1,1),1);
+  assert.ok(aidOpacity(1,4) > 0 && aidOpacity(1,4) < 1);
+  assert.equal(aidOpacity(1,5),0);
+  assert.equal(aidOpacity(.001,12),0);
+});
+test('direction arrows take the short route across the date line and remain coarse compass directions', () => {
+  assert.equal(directionAngle([179,0],[-179,0]),0);
+  assert.equal(directionAngle([899,0],[-179,0]),0);
+  assert.equal(Math.abs(directionAngle([-179,0],[179,0])),Math.PI);
+  const angle = directionAngle([0,0],[20,10]);
+  assert.ok(Number.isInteger(angle/(Math.PI/4)));
+});
+test('Morocco and Western Sahara retain separate source geometry and coverage ownership', () => {
+  const morocco = geography.features.find(f=>f.id==='MAR'), sahara = geography.features.find(f=>f.id==='SAH');
+  assert.ok(containsPoint(morocco,[-13,25])); assert.ok(!containsPoint(sahara,[-13,25]));
+  assert.ok(containsPoint(sahara,[-14,23])); assert.ok(!containsPoint(morocco,[-14,23]));
+  assert.equal(inScope(sahara.properties,findArea('northern-africa'),false),false);
+  assert.equal(inScope(sahara.properties,findArea('northern-africa'),true),true);
+});
+
+test('shared boundaries are rendered once so neighbouring dash phases cannot fill each other', () => {
+  const data={type:'FeatureCollection',features:[[[0,0],[1,0],[1,1],[0,1],[0,0]],[[1,0],[2,0],[2,1],[1,1],[1,0]]].map(ring=>({type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[ring]}}))};
+  const edges=[];
+  for(const f of borderLines(data).features) for(let i=1;i<f.geometry.coordinates.length;i++) edges.push([f.geometry.coordinates[i-1].join(','),f.geometry.coordinates[i].join(',')].sort().join('/'));
+  assert.equal(edges.length,7); assert.equal(new Set(edges).size,7);
+});
+test('regional thumbnails frame local geography without pulling all of Siberia into Eastern Europe', () => {
+  const area=findArea('eastern-europe'), ids=new Set(geography.features.filter(f=>inScope(f.properties,area,false)).map(f=>f.id));
+  const bounds=framing(geography,area,ids);
+  assert.ok(bounds[0]>=10 && bounds[2]<=55);
+  assert.ok(ids.has('RUS'));
+  const source=shapeMetrics(geography.features.find(f=>f.id==='RUS')).bounds;
+  assert.ok(source[2]>150); // Framing never alters the actual quiz polygon.
 });

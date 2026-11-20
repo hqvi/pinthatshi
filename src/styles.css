@@ -353,3 +353,37 @@ h2 { font-size: 22px; }
   .result-postcard h2 { font-size: 33px; }
 }
 @media (pointer: coarse) { .map-canvas .maplibregl-canvas { cursor: default; } }
+/* Reference-proportioned picker and tactile, interruptible card hover. */
+.screen-areas .area-layout, .screen-play .quiz-layout { grid-template-columns: minmax(0, 1fr) clamp(360px, 29vw, 560px); }
+.area-card { transform: translateY(0); transition: transform 160ms var(--ease-out), border-color 160ms ease; box-shadow: 1px 2px var(--ink); }
+.area-card:hover { box-shadow: 1px 2px var(--ink); }
+.mode-button { transform: rotate(-1.2deg); transition: transform 180ms var(--ease-out); }
+.collection-art { height: 185px; }
+.collection-art .atlas-map { padding: 0 8px; }
+.collection-placeholder { height: 100%; display: grid; place-content: center; text-align: center; color: var(--ink-2); border-bottom: 1px dashed var(--pencil); background: var(--paper-texture), var(--paper); font-size: 22px; letter-spacing: .1em; }
+.collection-placeholder small { font-size: 16px; margin-top: 12px; letter-spacing: 0; }
+@media (hover: hover) and (pointer: fine) { .mode-button:hover { transform: rotate(0); } .area-card:hover { transform: translateY(-2px); border-color: var(--red); } }
+.mode-button:focus-visible { transform: rotate(0); }
+.area-card:focus-visible { transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .mode-button, .mode-button:hover, .area-card, .area-card:hover, .area-card:focus-visible { transform: none; transition: none; } }
+@media (max-width: 760px) { .screen-play .quiz-layout { grid-template-columns: minmax(0,1fr); } }
+.feedback-overlay { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
+.question-block { position: relative; }
+.question-block:has(.hint-silhouette) { padding-right: 83px; }
+.hint-silhouette { position: absolute; right: 16px; top: 20px; width: 54px; height: 47px; }
+.streak-event { position: absolute; z-index: 7; top: 22px; left: 50%; transform: translateX(-50%) rotate(-3deg); pointer-events: none; }
+.streak-event > span { display: block; white-space: nowrap; padding: 6px 12px; background: var(--paper-texture), var(--paper); border: 3px double var(--ink); font-size: 24px; letter-spacing: .08em; text-transform: uppercase; box-shadow: 2px 2px var(--ink); }
+.streak-gold > span { background-color: var(--gold); }
+.streak-confetti { position: absolute; inset: 0 -65px; height: 100px; }
+.streak-confetti i { position: absolute; top: 20px; width: 5px; height: 8px; }
+@keyframes streak-enter { from { opacity: 0; transform: translateX(-50%) translateY(-8px) rotate(-3deg); } to { opacity: 1; transform: translateX(-50%) rotate(-3deg); } }
+@keyframes confetti-fall { from { opacity: 1; translate: 0 -15px; } to { opacity: 0; translate: 0 100px; rotate: 190deg; } }
+@media (prefers-reduced-motion: no-preference) { .streak-event { animation: streak-enter 180ms var(--ease-out); } .streak-confetti i { animation: confetti-fall 900ms var(--ease-out) both; } }
+@media (prefers-reduced-motion: reduce) { .streak-event { transform: translateX(-50%); } .streak-confetti { display: none; } }
+.streak-event.streak-static { animation: none; transform: translateX(-50%); }
+.streak-static .streak-confetti { display: none; }
+.panel-intro .legacy-note { font-size: 15px; border: 0; padding-top: 12px; color: var(--ink-2); }
+/* Keep thumbnail proportions consistent as the reference-width sidebar grows. */
+.card-map { height: auto; aspect-ratio: 1.45; }
+.area-card-wide .card-map { height: auto; aspect-ratio: 1.9; }
+.overview-card > svg { height: auto; aspect-ratio: 1.9; }

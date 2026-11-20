@@ -1,4 +1,4 @@
-export type Cue = 'click' | 'entry' | 'correct' | 'wrong' | 'hint' | 'paper' | 'stamp';
+export type Cue = 'click' | 'entry' | 'correct' | 'wrong' | 'hint' | 'paper' | 'stamp' | 'milestone';
 let context: AudioContext | undefined;
 let muted = false;
 try { muted = localStorage.getItem('pinthatshi.sound.muted') === 'true'; } catch { /* Browser-local preferences are optional. */ }
@@ -31,6 +31,7 @@ export function playSound(cue: Cue, count = 0) {
       tone(1150, 0, .025, .018); tone(notes[count % notes.length], .015, .32); tone(notes[(count + 2) % notes.length], .085, .42, .035);
       if ((count + 1) % 3 === 0) tone(3136, .19, .35, .012, 'sine');
     }
+    if (cue === 'milestone') { [783.99,1046.5,1318.5,1568].slice(0, count >= 10 ? 4 : 3).forEach((n,i) => tone(n,i*.075,.35,.035)); }
     if (cue === 'wrong') { tone(150, 0, .12, .035, 'square'); tone(120, .15, .12, .025, 'triangle'); }
     if (cue === 'hint') [1046.5, 1318.5, 1568].forEach((n, i) => tone(n, i * .065, .2, .025));
     if (cue === 'paper') noise(.34, .1, 2300);

@@ -9,7 +9,7 @@ export function coordinateLabel(value: number, latitude: boolean): string {
 }
 export function gridStep(span: number, pixels: number): number {
   const minimum = span * 46 / Math.max(1, pixels);
-  return [.1, .2, .5, 1, 2, 5, 10, 15, 30, 45, 90].find(step => step >= minimum) ?? 90;
+  return [.01, .02, .05, .1, .2, .5, 1, 2, 5, 10, 15, 30, 45, 90].find(step => step >= minimum) ?? 90;
 }
 export function gridValues(minimum: number, maximum: number, step: number): number[] {
   const values: number[] = [];

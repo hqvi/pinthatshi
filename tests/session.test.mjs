@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSession, answer, hint, targetId, summarize, addTime, isSession, canResume } from '../src/game/session.ts';
+import { createSession, answer, hint, targetId, summarize, addTime, isSession, canResume, streak, isMilestone } from '../src/game/session.ts';
 import { readProgress, writeSession, recordKey } from '../src/game/storage.ts';
 import { findLabelRect } from '../src/map/completion.ts';
 import { allAreas } from '../src/data/areas.ts';
@@ -97,4 +97,42 @@ test('old saves migrate without inventing learned countries from a run counter',
   assert.deepEqual(progress.learned, []);
   assert.equal(progress.rounds[recordKey('example', true)].id, old.active.id);
   assert.equal(progress.records.old.runs, 20);
+});
+
+test('manual hints progress through silhouette and location; third wrong guess also reveals location', () => {
+  let round = fresh();
+  round = hint(round); assert.equal(round.hintStage,1);
+  round = hint(round); assert.equal(round.hintStage,2); assert.equal(hint(round),round);
+  round = fresh();
+  for (let i=0;i<3;i++) { round = answer(round,'BBB',false,[10+i,20]); assert.equal(round.hintStage,i===2?2:0); }
+  assert.deepEqual(round.lastWrong,{id:'BBB',point:[12,20]});
+  assert.ok(isSession(round));
+  round = answer(round,'AAA'); assert.equal(round.hintStage,0); assert.equal(round.lastWrong,null); assert.equal(round.answers[0].hinted,true);
+});
+test('streaks include only uninterrupted first-try unassisted answers and use the agreed milestones', () => {
+  let round = createSession(['A','B','C','D','E','F'], 'test', false,'streak',false,()=>.999);
+  for (const id of ['A','B','C']) round=answer(round,id);
+  assert.equal(streak(round),3); assert.ok(isMilestone(3));
+  round=answer(round,'F'); assert.equal(streak(round),0);
+  round=answer(round,'D'); assert.equal(streak(round),0);
+  round=answer(round,'E'); assert.equal(streak(round),1);
+  assert.equal(streak(hint(round)),0);
+  assert.deepEqual([3,5,10,20,30,40].map(isMilestone),[true,true,true,true,true,true]);
+  assert.equal(isMilestone(15),false);
+});
+test('legacy geography sessions are archived while learned places and old record entries are retained', () => {
+  const legacy={...fresh(),version:1,dataset:'natural-earth-5.1.2-pinthatshi-1'};
+  let raw=JSON.stringify({version:1,active:legacy,rounds:{old:legacy},learned:['GUF'],records:{old:{runs:1,perfectBestMs:5000}},recordedIds:['legacy']});
+  const store={getItem:()=>raw,setItem:(_,value)=>{raw=value;}};
+  let progress=readProgress(store);
+  assert.equal(progress.active,null); assert.equal(progress.archivedRounds.length,1); assert.deepEqual(progress.learned,['GUF']);
+  writeSession(fresh(),store); progress=readProgress(store);
+  assert.equal(progress.archivedRounds.length,1); assert.equal(progress.records.old.perfectBestMs,5000);
+});
+
+test('tiny-country plaques leave the shape visible and provide space for their leader line', () => {
+  const rect=findLabelRect(250,150,140,22,700,400,[],true);
+  assert.ok(rect);
+  const x=Math.max(rect.x,Math.min(rect.x+rect.width,250)),y=Math.max(rect.y,Math.min(rect.y+rect.height,150));
+  assert.ok(Math.hypot(x-250,y-150)>=15);
 });
