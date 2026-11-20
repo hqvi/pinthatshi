@@ -1,6 +1,6 @@
 # pinthatshi: game design
 
-Status: wireframe layout approved; visual reference established; React application started with Home, Games, and area selection. The geography quiz is not playable yet.
+Status: Home, Games, area selection, and the interactive atlas are implemented. Places can be selected and explored, including overseas areas. The geography quiz is not playable yet; the source roster needs its final content audit before quiz integration.
 
 ## The idea
 

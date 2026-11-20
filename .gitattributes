@@ -3,3 +3,4 @@
 docs/style-guide/fonts/*-OFL.txt -text whitespace=-blank-at-eol
 docs/style-guide/fonts/*-LICENSE.txt -text whitespace=-blank-at-eol
 public/licenses/*-OFL.txt -text whitespace=-blank-at-eol
+public/licenses/*-LICENSE.txt -text whitespace=-blank-at-eol

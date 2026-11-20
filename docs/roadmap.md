@@ -45,6 +45,8 @@ Versions describe order and scope, not promised dates. Don't add later features 
 
 The first v0.2 application checkpoint implements Home, Games, and the Learn Countries area picker with static atlas framing. The next checkpoint replaces the overview with the interactive map; v0.2 is not tagged complete yet. The user's requested graticule, edge coordinates, country plaques, and shared answer colors are explicitly recorded in [visual direction](visual-direction.md#map-details-reserved-for-the-interactive-renderer) for v0.3/v0.4.
 
+That interactive-map foundation is now implemented. Before marking v0.3 complete, finish the content audit, resolve transcontinental membership and any missing small places, and complete the visual comparison. The next gameplay milestone connects this atlas to Find Countries sessions; exploration selection is not scored as an answer.
+
 ## Release checks
 
 - Compare relevant screens at the reference desktop size and at a narrow mobile width.
@@ -106,3 +108,14 @@ Hosting is a later milestone. The initial source of truth is this GitHub reposit
 - Area and coverage state travel in the URL and survive refresh, Back navigation, and returning from Games. Unknown area identifiers safely show the world. Future modes are labeled planned and do not pretend to start a quiz.
 - Bundled independent Natural Earth v5.1.2 1:50m illustrations; preserved font notices in production assets. Added GitHub Actions for TypeScript and build checks.
 - Local production build and dependency audit pass (zero reported vulnerabilities). Browser checks passed Home → Games → Areas, every continent plus world selection, coverage toggles, refresh/navigation persistence, focus/skip link, and 390px layouts without horizontal overflow. No browser console errors were observed.
+
+### 2026-11-20 — Interactive atlas foundation
+
+- Replaced the area-screen illustration with lazy-loaded MapLibre, a bundled module worker, and local geographic geometry. No tile service, API key, or geolocation is required for core exploration. Static Home and thumbnail art remain lightweight entry points relative to the renderer.
+- Added north-up pan/zoom, keyboard movement, cooperative touch/scroll gestures, zoom buttons, fit-to-area, and adaptive graticules with left/bottom coordinates projected from the current camera. Resize updates both map and overlay; camera animation respects reduced motion.
+- Added map selection and scope-specific searchable place selection, small-place markers, a name plaque, and one shared place color in the fill, plaque, and sidebar. The coverage toggle now filters selectable places while surrounding geography stays visible.
+- Built a documented 253-place exploration roster from Natural Earth v5.1.2 1:50m countries/map units. French Guiana is independently selectable in South America; ordinary UK subdivisions remain together. This is the source checklist, not finalized quiz coverage. Pacific bounds and place focus support date-line crossings.
+- Added loading/error overview fallback and retry controls. Browser testing exposed and corrected the module-worker setup, map-container CSS precedence, string feature IDs, and attribution overlapping bottom coordinates. Data checks also caught and corrected the mainland France/Portugal classification after the overseas split.
+- Eight automated tests cover longitude wrapping, adaptive grid spacing, short date-line intervals, French Guiana/France filtering, the unified UK, all-scope availability, finite coordinates/unique IDs, accent-insensitive search, and matching thumbnail/live-map colors. Thumbnail artwork now uses the same roster and color assignment as the interactive map.
+- Local checks passed direct polygon selection, keyboard pan, zoom/fit, French Guiana coverage filtering, Monaco focus, Fiji date-line framing, and production-build rendering. Production browser logs were clear after the integration fixes. A 390px viewport resized the map and grid together without horizontal overflow. Final content audit, complete visual matching, and quiz/session behavior remain open.
+- The map renderer is a separate approximately 1.1MB minified chunk (about 300KB gzipped), with a separate worker and roughly 2MB geometry asset. Vite reports its large-chunk advisory; lazy loading keeps that renderer out of the Home entry bundle. Further performance work should follow actual device measurements.

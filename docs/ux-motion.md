@@ -14,7 +14,7 @@ The approved appearance includes behavior as well as colors. Completion should f
 | Silhouette answer | Reveal surrounding geography so the shape is connected to its real location. |
 | Flag answer | Confirm the correct place and reveal the flag inside its boundary while retaining a complete rectangular flag reference. |
 
-The [interaction lab](interaction-lab/index.html) implements the completion experiment, raised map edge, and normal flag images clipped into four geographic contexts. The application, game interactions, and other rows above remain future work. The prototype isn't proof that all Farflung timing, camera behavior, or physics has been matched.
+The [interaction lab](interaction-lab/index.html) implements the completion experiment, raised map edge, and normal flag images clipped into four geographic contexts. The application now includes area selection and interactive map exploration. Answer checking and the other game interactions remain future work. The prototype isn't proof that all Farflung timing, camera behavior, or physics has been matched.
 
 ## Motion requirements
 
@@ -43,4 +43,4 @@ The independent static preview uses an equivalent SVG mask with a 7-unit offset 
 
 ## Next integration step
 
-Build the v0.2 React/TypeScript application and the faithful area-picker/map surface. Carry these UX requirements into its components, then connect completion and flag rendering to real session data during the relevant gameplay milestones. Avoid adding more disconnected demo pages before starting that application work.
+The React/TypeScript application now has an interactive atlas and area picker. Camera changes use a 350ms transition, or immediate updates with reduced motion; new moves interrupt previous ones through MapLibre. Explore controls remain available after geography loads. Next, audit the quiz roster and connect Find Countries prompts, answer state, and completion captures to the existing surfaces. Flag rendering joins real sessions in its own milestone.

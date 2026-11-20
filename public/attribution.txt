@@ -1,9 +1,11 @@
 pinthatshi atlas overview
 
 Cartography: Natural Earth v5.1.2, 1:50m Admin-0 Countries (public domain).
-Source: https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_countries.geojson
+Countries: https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_countries.geojson
+Map units: https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_map_units.geojson
 Terms: https://www.naturalearthdata.com/about/terms-of-use/
 These illustrations do not define final gameplay coverage or political status.
+Interactive atlas: MapLibre GL JS (BSD-3-Clause), bundled with its module worker.
 
 Fonts: VT323 and Bungee, distributed under their bundled SIL Open Font License notices in /licenses/.
 Textures and application interface: independently implemented for pinthatshi.

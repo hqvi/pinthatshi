@@ -60,10 +60,41 @@ h2 { font-size: 22px; }
 .map-stage { min-width: 0; }
 .map-stage > .atlas-map { padding: 20px; }
 .map-stage::after, .home-atlas::after { content: ''; position: absolute; inset: 0; background-image: var(--paper-texture); pointer-events: none; opacity: .7; }
+.map-stage::after { z-index: 1; }
+.map-stage > .compass, .map-caption { z-index: 3; pointer-events: none; }
+.interactive-atlas, .map-canvas, .atlas-fallback { position: absolute; inset: 0; }
+.interactive-atlas .map-canvas { position: absolute; inset: 0; }
+.map-canvas .maplibregl-canvas { outline-offset: -4px; }
+.atlas-fallback { background: var(--wave-texture), var(--sea); z-index: 2; }
+.atlas-fallback > p { position: absolute; bottom: 65px; left: 50%; transform: translateX(-50%); width: min(330px, 85%); padding: 12px; border: 1px solid var(--ink); text-align: center; font-size: 17px; }
+.atlas-fallback button { display: block; margin: 10px auto 0; padding: 7px 15px; background: var(--card); border: 1px solid var(--ink); }
+.coordinate-grid { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.graticule-lines { stroke: var(--ink); stroke-opacity: .18; stroke-width: .6; stroke-dasharray: 1 4; }
+.coordinate-labels { fill: var(--ink); font-family: var(--font-pixel); font-size: 13px; stroke: var(--paper); stroke-width: 2px; paint-order: stroke; stroke-linejoin: round; }
+.map-controls { position: absolute; bottom: 36px; left: 10px; z-index: 4; display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+.map-controls button { width: 38px; height: 38px; background: var(--paper-texture), var(--paper); border: 1px solid var(--ink); box-shadow: 2px 2px var(--ink); font-size: 25px; }
+.map-controls button:disabled { opacity: .45; cursor: default; }
+.map-controls .fit-control { width: auto; padding: 0 9px; font-size: 16px; }
+.map-credit { z-index: 3; }
+.country-plaque { display: inline-flex; gap: 4px; align-items: center; padding: 3px 6px; font: 16px var(--font-pixel); background: var(--paper-texture), var(--paper); color: var(--ink); border: 1px solid var(--ink); box-shadow: 1px 1px #2b21184d; white-space: nowrap; pointer-events: none; }
+.place-dot, .country-plaque i { display: inline-block; width: 10px; height: 10px; border: 1px solid var(--ink); border-radius: 50%; flex-shrink: 0; margin-right: 6px; }
+.country-plaque i { margin: 0; }
+.explore-places { margin-bottom: 25px; border: 1px solid var(--pencil); padding: 10px; }
+.explore-places summary { cursor: pointer; font-size: 18px; }
+.place-picker { margin-top: 12px; }
+.place-picker label { font-size: 16px; display: block; margin-bottom: 5px; }
+.place-picker input { width: 100%; min-height: 38px; border: 1px solid var(--ink); background: var(--card); color: var(--ink); padding: 5px 8px; border-radius: 0; font-size: 18px; }
+.picker-help { font-size: 15px; color: var(--ink-2); margin: 8px 0; }
+.search-status { font-size: 14px; color: var(--ink-2); }
+.place-results { list-style: none; margin: 8px 0 0; padding: 0; }
+.place-results button { display: flex; align-items: center; width: 100%; min-height: 40px; padding: 6px 5px; background: transparent; border: 0; border-bottom: 1px dotted var(--pencil); text-align: left; font-size: 18px; }
+.place-results button:hover { background: var(--card); }
+.place-results small { display: block; font-size: 14px; color: var(--ink-2); }
+.maplibregl-cooperative-gesture-screen { background-color: #2b2118bf; font-family: var(--font-pixel); }
 .map-caption { position: absolute; left: 18px; top: 18px; padding: 10px 15px; border: 1px solid var(--ink); box-shadow: 2px 2px var(--ink); max-width: calc(100% - 36px); }
 .map-caption strong { display: block; font-size: 25px; font-weight: 400; }
 .map-caption > span:last-child { display: block; font-size: 15px; color: var(--ink-2); }
-.map-credit { position: absolute; left: 8px; bottom: 5px; font-size: 12px; background: var(--paper); padding: 1px 5px; }
+.map-credit { position: absolute; right: 70px; bottom: 25px; font-size: 12px; background: var(--paper); padding: 1px 5px; }
 .area-panel { border-left: 1px solid var(--ink); display: flex; flex-direction: column; min-height: 0; }
 .panel-intro { padding: 24px 22px 17px; border-bottom: 1px solid var(--ink); }
 .panel-intro h1 { font-size: 25px; margin-bottom: 17px; }

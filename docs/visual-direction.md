@@ -66,6 +66,8 @@ The current static experiments are not the final map renderer. Preserve these ex
 
 Implement these with the real map and answer-state integration (v0.3/v0.4), then preserve them in postcard captures. They are tracked fidelity requirements, not discarded details. The user approved moving on to the application screens before these corrections.
 
+The interactive-atlas checkpoint now implements adaptive geographic gridlines and edge coordinates through the actual map projection, plus a selected-place plaque and shared map/sidebar color. Panning, zooming, and resizing update the overlay. The map remains north-up so its edges represent longitude and latitude consistently. Completed-map label collision handling and postcard capture still need real session integration. Continue comparing overall texture, coastline treatment, boundary detail, and type scale against the references; this is not a completed 1:1 claim.
+
 1. Preserve the approved wireframes as the layout reference.
 2. Scaffold React, TypeScript, and Vite; turn the measured visual tokens into application styles and shared components.
 3. Match the Learn Countries area picker first: frame, sidebar proportions, fonts, dividers, card labels, and map framing.

@@ -32,11 +32,11 @@ export const continents: Continent[] = [
     region('caribbean', 'The Caribbean', [-88, 9, -58, 29]),
   ]),
   continent('south-america', 'South America', [-83, -57, -32, 14], []),
-  continent('oceania', 'Oceania', [105, -49, 180, 24], [
+  continent('oceania', 'Oceania', [105, -49, 250, 30], [
     region('australia-new-zealand', 'Australia & New Zealand', [110, -49, 180, -9]),
-    region('melanesia', 'Melanesia', [130, -25, 180, 1]),
-    region('micronesia', 'Micronesia', [130, -5, 180, 24]),
-    region('polynesia', 'Polynesia', [-180, -48, -110, 30]),
+    region('melanesia', 'Melanesia', [130, -25, 185, 1]),
+    region('micronesia', 'Micronesia', [130, -5, 190, 24]),
+    region('polynesia', 'Polynesia', [170, -48, 250, 30]),
   ]),
 ];
 export const world: Area = { id: 'world', name: 'The World', bounds: [-180, -60, 180, 85], level: 'world' };

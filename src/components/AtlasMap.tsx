@@ -21,5 +21,6 @@ function viewBox(area: Area): string {
 export const AtlasMap = memo(function AtlasMap({ area, colorful = false, decorative = false }: { area: Area; colorful?: boolean; decorative?: boolean }) {
   return <svg className="atlas-map" viewBox={viewBox(area)} preserveAspectRatio="xMidYMid meet" role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : `${area.name} atlas overview`} aria-hidden={decorative || undefined}>
     <image href={colorful ? colorMap : paperMap} width="1200" height="800" />
+    <image href={colorful ? colorMap : paperMap} x={2 * Math.PI * scale} width="1200" height="800" />
   </svg>;
 });
