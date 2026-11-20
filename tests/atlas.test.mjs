@@ -83,3 +83,13 @@ test('scope palettes are deterministic, complete and do not change source geogra
   assert.equal(JSON.stringify(geography), before);
   assert.equal(coordinateLabel(180, false), '180°');
 });
+
+test('physical coast paths use finite coordinates and fit the renderer line-mesh limit', async () => {
+  const coast = JSON.parse(await readFile(new URL('../src/assets/coastlines.geojson', import.meta.url), 'utf8'));
+  assert.ok(coast.features.length > 1000);
+  for (const feature of coast.features) {
+    assert.equal(feature.geometry.type, 'LineString');
+    assert.ok(feature.geometry.coordinates.length >= 2 && feature.geometry.coordinates.length * 10 < 65535);
+    assert.ok(feature.geometry.coordinates.every(([x, y]) => Number.isFinite(x) && Number.isFinite(y) && Math.abs(x) <= 180 && Math.abs(y) <= 90));
+  }
+});

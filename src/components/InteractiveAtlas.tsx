@@ -83,7 +83,7 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect, mode = '
         atlas.on('error', event => { if (!disposed && 'sourceId' in event && event.sourceId === 'openfreemap') setTilesFailed(true); });
         atlas.on('load', () => {
           if (disposed) return;
-          atlas.addSource('places', { type: 'geojson', data, promoteId: 'id', tolerance: .03, maxzoom: 12 });
+          atlas.addSource('places', { type: 'geojson', data, promoteId: 'id', tolerance: .25, maxzoom: 12 });
           atlas.addSource('coast', { type: 'geojson', data: coastline, tolerance: .03 });
           for (const [id, width, color] of [['shallows', 20, '#b7ced1'], ['waterline', 13, '#a9c3c9'], ['coastal-rim', 7, '#c7dad9']] as const) atlas.addLayer({ id, type: 'line', source: 'coast', paint: { 'line-color': color, 'line-width': width }, layout: { 'line-join': 'round' } });
           atlas.addLayer({ id: 'land', type: 'fill', source: 'places', paint: { 'fill-color': ['case', ['boolean', ['feature-state', 'selected'], false], ['coalesce', ['feature-state', 'color'], ['get', 'color']], ['boolean', ['feature-state', 'active'], false], '#ecdfb9', '#b8c8c4'], 'fill-opacity': 1 } });

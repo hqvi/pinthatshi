@@ -14,7 +14,7 @@ The compass is a fine SVG dial. Its needle receives horizontal pan impulses and 
 
 ## Geographic sources and accuracy
 
-Country and map-unit geometry remain Natural Earth v5.1.2 1:50m, with the frozen 253-place roster and documented country/area policy. Separate physical coastlines from the same version/resolution prevent inland borders from acquiring coastline halos or solid coast strokes. These are atlas-scale generalized shapes; tiny places use explicit aid circles. The map uses Mercator projection consistently for land, waves, labels, grids, hit tests, and capture.
+Country and map-unit geometry remain Natural Earth v5.1.2 1:50m, with the frozen 253-place roster and documented country/area policy. Separate physical coastlines from the same version/resolution prevent inland borders from acquiring coastline halos or solid coast strokes. Long coastline paths are split at shared endpoints to stay under the renderer’s 16-bit mesh limit, retaining every source vertex. These are atlas-scale generalized shapes; tiny places use explicit aid circles. The map uses Mercator projection consistently for land, waves, labels, grids, hit tests, and capture.
 
 Optional detail tiles use OpenFreeMap's planet vector endpoint. The custom detail style adds water, waterways, and transportation without place-name labels. They do not replace quiz geometry or alter scoring. Local country/coast assets remain the fallback when detail requests fail. Required OpenMapTiles/OpenStreetMap credits are available through the compact © control.
 

@@ -41,7 +41,7 @@ Synthesized sound cues cover UI clicks, entry, correct/wrong answers, hints, pap
 
 Unfinished rounds save separately by region and coverage, preserving old version-1 saves and perfect-time records. Learned totals count actual found places, including assisted answers; revealed/skipped answers do not count as learned. Perfect times require a complete full-scope round without mistakes, hints, or skips. Review cannot replace full-map records. The timer pauses while the tab is hidden, the map is unavailable, or the round is paused. Storage is specific to this browser/origin; no account or cross-device sync exists yet.
 
-`npm test` runs 20 checks covering geography, adaptive grids, every scope/coverage combination, palette consistency, scoring, review, save migration, independent region saves, records, and label layout. GitHub Actions runs tests and production builds when changes are eventually pushed.
+`npm test` runs 21 checks covering geography, adaptive grids, every scope/coverage combination, palette consistency, scoring, review, save migration, independent region saves, records, and label layout. GitHub Actions runs tests and production builds when changes are eventually pushed.
 
 ## Open the original design previews
 
