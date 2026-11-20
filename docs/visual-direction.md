@@ -55,6 +55,17 @@ These rules establish an asset style, not a new collectible or achievement featu
 
 ## Next milestone: v0.2 atlas design
 
+### Map details reserved for the interactive renderer
+
+The current static experiments are not the final map renderer. Preserve these explicit requirements from the user's latest reference:
+
+- Geographic graticule lines tied to longitude/latitude, with spacing that adapts to zoom; not a decorative screen-space grid.
+- Latitude labels along the left edge and longitude labels along the bottom, aligned with the visible map coordinates during pan, zoom, and resize.
+- One shared country-color assignment for the map fill, Found list dots, progress ticks, and country-name plaques; sidebar surfaces must use the same approved parchment tokens.
+- Legible parchment country-name plaques with ink borders and matching color dots, anchored to each place with collision handling for small or crowded countries.
+
+Implement these with the real map and answer-state integration (v0.3/v0.4), then preserve them in postcard captures. They are tracked fidelity requirements, not discarded details. The user approved moving on to the application screens before these corrections.
+
 1. Preserve the approved wireframes as the layout reference.
 2. Scaffold React, TypeScript, and Vite; turn the measured visual tokens into application styles and shared components.
 3. Match the Learn Countries area picker first: frame, sidebar proportions, fonts, dividers, card labels, and map framing.
