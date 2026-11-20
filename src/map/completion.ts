@@ -91,4 +91,3 @@ export function captureMap(map: LibreMap, overlay: HTMLCanvasElement): string {
   ctx.font = '12px VT323, monospace'; ctx.textAlign = 'right'; ctx.fillText('Natural Earth · pinthatshi', width - 8, height - 25);
   return output.toDataURL('image/png');
 }
-
