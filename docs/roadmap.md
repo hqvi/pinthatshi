@@ -77,3 +77,11 @@ Hosting is a later milestone. The initial source of truth is this GitHub reposit
 - Inspected the Souvenirs screen: observed 16 x 16 SVG sprites displayed at 48 x 48 with crisp edges.
 - Added a reference sheet for measured typography and colors, independently recreated textures, and original sprite examples. The complete application and map remain future milestones.
 - Checked the reference sheet on desktop and at 390px width: assets load, the measured heading values match, sprite dimensions stay at integer scaling, and no horizontal overflow or console errors were observed. Confirmed the link back to the approved wireframes.
+
+### 2026-11-20 — Completion UX and detailed flags
+
+- The user approved the visual sheet and requested Farflung-style transitions, including the completion postcard and stamp.
+- Added a replayable completion experiment with skip/reset, keyboard handling, and reduced motion.
+- Added Mexico, Spain, Brazil, and Philippines source-versus-pixel comparisons, preserving flag proportions and offering full-detail inspection.
+- Kept prototype motion separate from claims of an exact animation match. The next implementation step is the real v0.2 application shell and area-picker/map surface.
+- Browser checks covered completion, skip/reset, keyboard focus, reduced-motion transforms, and coarse/fine flag switching. The postcard fits the phone stage, flag ratios and integer scaling are preserved, source/pixel comparisons share display sizes, and no horizontal overflow or console errors were observed.

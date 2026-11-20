@@ -10,6 +10,8 @@ Use the [measured design inspection](farflung-design-audit.md) as the starting s
 
 The [visual reference sheet](style-guide/index.html) previews the measured fonts and palette, recreated surface effects, and original grid-based sprite examples. It is a design reference, not v0.2's finished application.
 
+The user also approved that appearance and requested the Farflung-style completion/postcard flow. The [UX and motion specification](ux-motion.md) and [interaction lab](interaction-lab/index.html) cover the completion experiment, reduced motion, and resolution comparisons for detailed flags. These extend the accepted visual direction rather than replacing the approved layouts.
+
 ## What changes after the wireframes
 
 | Part | Required treatment |

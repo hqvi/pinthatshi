@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="A completion-transition prototype and detailed flag comparison for pinthatshi.">
+  <title>pinthatshi · motion and detailed flags</title>
+  <link rel="stylesheet" href="../style-guide/tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="lab.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#lab">Skip to the preview</a>
+  <header class="review-bar"><a href="../style-guide/index.html">Back to fonts, colors &amp; sprites</a><span>pinthatshi / interaction lab</span></header>
+  <main id="lab" class="lab-book">
+    <header class="introduction"><span class="eyebrow">How it moves. How it reads.</span><h1>A finish worth keeping.</h1><p>Try a completion reveal, then compare detailed flags at different pixel resolutions. These are design experiments, not a playable game or a finished 1:1 animation match.</p><nav class="lab-jumps" aria-label="Preview sections"><a href="#motion-title">Completion preview</a><a href="#flag-title">Detailed flags</a></nav></header>
+
+    <section class="motion-section" aria-labelledby="motion-title">
+      <div class="section-heading"><div><span class="eyebrow">UX / completion</span><h2 id="motion-title">From map to postcard</h2></div><p>Sample session · illustrative map<br>The real application will use its actual session results.</p></div>
+      <div class="demo-controls">
+        <button type="button" class="button primary" id="play-completion">Preview completion</button>
+        <button type="button" class="button" id="skip-completion" disabled>Skip animation</button>
+        <button type="button" class="button" id="reset-completion">Show map</button>
+        <label><input type="checkbox" id="slow-motion"> Slow preview (3×)</label>
+        <label><input type="checkbox" id="reduce-motion"> Reduced motion</label>
+      </div>
+      <p id="motion-status" class="status" role="status">Map view. Preview the end-of-session reveal.</p>
+
+      <div class="atlas-demo" data-phase="map">
+        <div class="atlas-topline"><span>FIND COUNTRIES</span><span>SOUTH AMERICA · SAMPLE</span></div>
+        <div class="atlas-main">
+          <div class="completed-map"><img src="assets/south-america.svg" alt="Illustrative completed map of South America with colored geographic areas"><span class="map-credit">MADE WITH NATURAL EARTH · LOW-DETAIL PREVIEW</span></div>
+          <article class="postcard" aria-labelledby="postcard-title" hidden>
+            <header class="postcard-heading"><p>Greetings from</p><h3 id="postcard-title" tabindex="-1">South America</h3></header>
+            <div class="postcard-body"><div class="postcard-map"><img src="assets/south-america.svg" alt="The same illustrative completed map, inside the postcard"><span class="completion-stamp">Complete</span></div><div class="postcard-results"><div class="postcard-score">13<span>/13</span></div><p class="time-result">Time <strong>0:25</strong></p><p class="postcard-note">A sample set of places.<br>A little more of the map learned.</p><button type="button" class="button" id="replay-postcard">Replay reveal</button><button type="button" class="button dark" id="return-to-map">Back to map</button></div></div>
+            <footer>PINTHATSHI · FIND COUNTRIES · SAMPLE SESSION</footer>
+          </article>
+        </div>
+        <aside class="atlas-sidebar"><div class="sidebar-time"><span class="eyebrow">Time</span><strong>0:25</strong></div><h3>Found · sample places</h3><ul><li>Argentina</li><li>Bolivia</li><li>Brazil</li><li>Chile</li><li>Colombia</li><li>Ecuador</li><li>French Guiana</li><li>Guyana</li><li>Paraguay</li><li>Peru</li><li>Suriname</li><li>Uruguay</li><li>Venezuela</li></ul><p>Countries &amp; Areas</p></aside>
+      </div>
+      <p class="section-note">The large reveal is reserved for finishing a session. Normal answer feedback will stay brief. You can skip or reset this sequence; keyboard-triggered previews settle immediately. Reduced motion keeps the same result without the tilt or zoom.</p>
+    </section>
+
+    <section class="flag-section" aria-labelledby="flag-title">
+      <div class="section-heading"><div><span class="eyebrow">Flag artwork / detail comparison</span><h2 id="flag-title">Keep the symbols readable.</h2></div><p>Full-detail source alongside pixel-grid rendering.<br>Exact proportions are preserved in the grid.</p></div>
+      <fieldset class="detail-options"><legend>Pixel grid detail</legend><label><input type="radio" name="flag-detail" value="16"> Coarse comparison</label><label><input type="radio" name="flag-detail" value="32"> Medium</label><label><input type="radio" name="flag-detail" value="64" checked> Fine</label></fieldset>
+      <p class="section-note">Fine is the starting point for these complex flags. Coarse is here to expose what gets lost. A tiny emblem will still lose detail, so the game must also offer a clear, enlarged reference.</p>
+      <div class="flag-grid">
+        <article class="flag-card" data-flag="mx" data-numerator="7" data-denominator="4"><h3>Mexico</h3><div class="flag-comparison"><figure><div class="flag-stage"><img class="source-flag" src="assets/flags/mx.svg" alt="Full-detail Mexico flag with the eagle and snake coat of arms"></div><figcaption>Full-detail source</figcaption></figure><figure><div class="flag-stage pixel-stage"><canvas role="img" aria-label="Mexico flag rendered on a pixel grid"></canvas></div><figcaption class="grid-description">Pixel version loading</figcaption></figure></div><a href="assets/flags/mx.svg" target="_blank" rel="noopener">Inspect the full flag</a></article>
+        <article class="flag-card" data-flag="es" data-numerator="3" data-denominator="2"><h3>Spain</h3><div class="flag-comparison"><figure><div class="flag-stage"><img class="source-flag" src="assets/flags/es.svg" alt="Full-detail Spain flag with its coat of arms"></div><figcaption>Full-detail source</figcaption></figure><figure><div class="flag-stage pixel-stage"><canvas role="img" aria-label="Spain flag rendered on a pixel grid"></canvas></div><figcaption class="grid-description">Pixel version loading</figcaption></figure></div><a href="assets/flags/es.svg" target="_blank" rel="noopener">Inspect the full flag</a></article>
+        <article class="flag-card" data-flag="br" data-numerator="10" data-denominator="7"><h3>Brazil</h3><div class="flag-comparison"><figure><div class="flag-stage"><img class="source-flag" src="assets/flags/br.svg" alt="Full-detail Brazil flag with the blue globe, band, and stars"></div><figcaption>Full-detail source</figcaption></figure><figure><div class="flag-stage pixel-stage"><canvas role="img" aria-label="Brazil flag rendered on a pixel grid"></canvas></div><figcaption class="grid-description">Pixel version loading</figcaption></figure></div><a href="assets/flags/br.svg" target="_blank" rel="noopener">Inspect the full flag</a></article>
+        <article class="flag-card" data-flag="ph" data-numerator="2" data-denominator="1"><h3>Philippines</h3><div class="flag-comparison"><figure><div class="flag-stage"><img class="source-flag" src="assets/flags/ph.svg" alt="Full-detail Philippines flag with its sun, rays, and three stars"></div><figcaption>Full-detail source</figcaption></figure><figure><div class="flag-stage pixel-stage"><canvas role="img" aria-label="Philippines flag rendered on a pixel grid"></canvas></div><figcaption class="grid-description">Pixel version loading</figcaption></figure></div><a href="assets/flags/ph.svg" target="_blank" rel="noopener">Inspect the full flag</a></article>
+      </div>
+      <p class="fine-print">This lab compares source-driven rasterization, not finished hand-polished sprite artwork. Final flags still need individual symbol checks. <a href="README.md">Asset sources and experiment notes</a>.</p>
+    </section>
+    <footer class="next-step"><span class="eyebrow">Next / the application</span><p>Keep the approved appearance, build the real area picker and atlas, and connect these interaction patterns to actual geography and session results.</p></footer>
+  </main>
+</body>
+</html>

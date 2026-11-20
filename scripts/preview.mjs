@@ -54,5 +54,6 @@ server.on('error', (error) => {
 server.listen(port, host, () => {
   console.log(`pinthatshi wireframes: http://${host}:${port}`);
   console.log(`Visual reference: http://${host}:${port}/style-guide/`);
+  console.log(`Motion and flags: http://${host}:${port}/interaction-lab/`);
   console.log('Press Ctrl+C to stop.');
 });
