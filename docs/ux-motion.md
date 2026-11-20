@@ -44,3 +44,9 @@ The independent static preview uses an equivalent SVG mask with a 7-unit offset 
 ## Next integration step
 
 Find Countries now connects the atlas to live prompts, answers, review, records, and completion. Camera changes use a 350ms transition, or immediate updates with reduced motion. The next milestone adds country recall and identification; normal-image flag rendering joins real sessions in the flags milestone. Continue refining the common atlas surfaces rather than adding disconnected demos.
+
+## v0.6 guided feedback and camera motion
+
+The smooth-map checkpoint supersedes the earlier immediate hint/refit behavior. First Space shows the silhouette, second Space circles the location, and the third mistake automatically enables the location cue. Wrong-country fills and direction arrows persist for that prompt. Ordinary answer clicks never refit the camera. Scope-wide completion capture occurs behind the opaque paper surface after the stationary-map hold.
+
+Grid/coordinate overlays draw synchronously from MapLibre camera frames, with 180ms spacing crossfades and spacing hysteresis; GPU waves keep stable geographic positions. The interface does not ease overlays behind the camera. Region-card hover uses a 160ms translation/border response; the mode card straightens from a slight tilt over 180ms. Streak banners use a brief entrance, with gold confetti only at ten and later milestones. Keyboard celebrations omit positional entrances, and reduced motion removes particle travel and tilt.

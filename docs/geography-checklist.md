@@ -1,5 +1,7 @@
 # Interactive atlas: source checklist
 
+Learning memberships are maintained in `src/data/memberships.json` for dataset `natural-earth-5.1.2-pinthatshi-2`. The table below retains the original source continent/subregion values for audit; it does not drive the 22-map picker.
+
 This is the first playable roster. Countries contains 197 entries; expanded coverage contains 253. See the [roster policy](game-roster.md) for inclusions and primary-region choices. 253 mapped places use Natural Earth v5.1.2 1:50m countries and map units. This version freezes the practice grouping. Future roster revisions must change the dataset version so records remain comparable. Source classifications are preserved below; they are not assertions of recognition or sovereignty.
 
 Overseas map units are split for France, Netherlands, Portugal, Norway, New Zealand, and the source's Indian Ocean Territories. Mainland France and Portugal retain FRA/PRT identifiers. The UK, Belgium, Bosnia and Herzegovina, and other internally subdivided countries remain together. Antarctica is context outside this practice roster and is currently omitted. Region membership follows the source SUBREGION; Northern Africa maps to its Northern Africa/Western Sahara entries, and the Americas use Northern America, Central America, Caribbean, and South America. Scope filters use these names, not bounding-box containment.

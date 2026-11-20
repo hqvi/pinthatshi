@@ -1,5 +1,7 @@
 # pinthatshi: roadmap and build journal
 
+Current checkpoint: **v0.6.0-alpha.1 — smooth rendering, 22-map picker, guided hints, and streak feedback.** See [implementation and validation](smooth-map-checkpoint.md). Review this Countries experience before adding other games. All development commits remain local until the complete final game is finished.
+
 ## How we'll work
 
 Build a small piece, understand it, check it, and record it. Before implementation, explain the purpose and the concepts involved. Afterward, show the result and the diff, explain the check, and make a focused commit.
@@ -15,7 +17,7 @@ Git records the local history. GitHub holds the shared remote copy. A release co
 | Push | Upload commits to the GitHub repository. |
 | Tag | Give a particular checkpoint a release name such as v0.1.0. |
 
-Use `main` for the initial documentation checkpoint. Use short feature branches for later application changes, reviewing the diff before merging. Push completed checkpoints; use a clearly described draft branch if sharing unfinished work.
+Use `main` for the initial documentation checkpoint. Use short feature branches for later application changes, reviewing the diff before merging. Commit completed checkpoints locally. Do not push development checkpoints or alpha versions; pushes are reserved for the finished, complete final game under the owner’s updated instruction.
 
 ## Release path
 
@@ -25,11 +27,13 @@ Use `main` for the initial documentation checkpoint. Use short feature branches 
 | v0.2 — Atlas design | Application scaffold, home, area cards, fonts, frame, parchment panels, and map styling. | Desktop and narrow layouts have been visually reviewed against the references. |
 | v0.3 — Interactive map | Pan/zoom, selection, geographic scope, overseas areas, small-place handling, and content checklist. | World and regional views remain aligned and usable; coverage and attribution are documented. |
 | v0.4 — First playable | Find Countries worldwide, by subregion, continent, and world; expanded areas; hints, results, local records. | A player can complete every supported scope and replay or review missed items. |
-| v0.5 — Country recall | Name All Countries, Name the Country, silhouette reveal. | Typed answers and map reveals work across the shared scopes. |
-| v0.6 — Capitals | Country selection, city pinning, capital recall and identification. | Capital exceptions are verified; distance and accuracy records are correctly separated. |
-| v0.7 — Flags | Map the Flag, Name the Flag, Match the Flag, Name All Flags. | Flags remain recognizable and map fills stay clipped to boundaries. |
-| v0.8 — Progress | Review Mistakes, suggested practice, export/import, improved records. | Progress persists, can be moved between devices, and survives supported upgrades. |
-| v0.9 — Philippines | Province and region games, with region/island-group/national scopes. | Coverage and membership are checked against a documented PSGC version. |
+| v0.5 — Initial polish | Reference palette, map details, compass, cursor, sounds, and independent saves. | First polish checkpoint is verified locally. |
+| v0.6 — Smooth maps and guided hints | Camera-synchronous grids/GPU waves, 22 maps, selection rings, hint stages, arrows, and streaks. | UI playtests and geographic/interaction checks pass. |
+| v0.7 — Country recall | Name All Countries, Name the Country, silhouette reveal. | Typed answers and map reveals work across the shared scopes. |
+| v0.8 — Capitals | Country selection, city pinning, capital recall and identification. | Capital exceptions are verified; distance and accuracy records are correctly separated. |
+| v0.9 — Flags | Map the Flag, Name the Flag, Match the Flag, Name All Flags. | Flags remain recognizable and map fills stay clipped to boundaries. |
+| v0.10 — Progress | Review Mistakes, suggested practice, export/import, improved records. | Progress persists, can be moved between devices, and survives supported upgrades. |
+| v0.11 — Philippines | Province and region games, with region/island-group/national scopes. | Coverage and membership are checked against a documented PSGC version. |
 | v1.0 — First stable edition | Polished world suite and Philippines pack. | Core flows, content, mobile behavior, accessibility, and failure handling meet release checks. |
 | v1.1 — USA | States, capitals, state flags. | Pack-specific data and applicable modes pass the same checks. |
 | v1.2 — UK | Constituent countries and flags. | Pack is complete; deeper subdivisions have a separately scoped follow-up plan. |
@@ -47,7 +51,7 @@ The first v0.2 application checkpoint implements Home, Games, and the Learn Coun
 
 That interactive-map foundation is now implemented. Before marking v0.3 complete, finish the content audit, resolve transcontinental membership and any missing small places, and complete the visual comparison. The next gameplay milestone connects this atlas to Find Countries sessions; exploration selection is not scored as an answer.
 
-Current checkpoint: **v0.4.0-alpha.1 — first playable Find Countries**. The roster and primary grouping for this dataset version are published, and all 28 scopes work in both coverage modes. This is an alpha checkpoint rather than a claim that all visual matching, device checks, and later geography refinements are finished. Next, improve any issues from playtesting and begin the country-recall modes.
+Earlier checkpoint: **v0.4.0-alpha.1 — first playable Find Countries**. The roster and primary grouping for this dataset version are published, and all 28 scopes work in both coverage modes. This is an alpha checkpoint rather than a claim that all visual matching, device checks, and later geography refinements are finished. The subsequent v0.5/v0.6 checkpoints prioritize playtest fixes before country-recall modes; the current picker now has 22 maps.
 
 ## Release checks
 
