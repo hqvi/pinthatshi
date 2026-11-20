@@ -125,52 +125,64 @@ reduceToggle.addEventListener('change', updateMotionPreference);
 motionPreference.addEventListener('change', updateMotionPreference);
 updateMotionPreference();
 
-const flagCards = [...document.querySelectorAll('[data-flag]')];
+document.getElementById('completion-depth').addEventListener('change', (event) => {
+  document.querySelectorAll('[data-completion-map]').forEach((image, index) => {
+    image.src = event.target.checked ? 'assets/south-america.svg' : 'assets/south-america-flat.svg';
+    image.alt = `${index ? 'Postcard snapshot of the' : 'Illustrative'} completed South America map${event.target.checked ? ' with a hard red offset edge' : ' without the raised edge'}`;
+  });
+});
 
-function renderFlag(card) {
-  const source = card.querySelector('.source-flag');
-  if (!source.complete || !source.naturalWidth) return;
-  const targetHeight = Number(document.querySelector('[name="flag-detail"]:checked').value);
-  const numerator = Number(card.dataset.numerator);
-  const denominator = Number(card.dataset.denominator);
-  // Multiples of the ratio's denominator retain the original flag proportions.
-  const units = Math.max(1, Math.round(targetHeight / denominator));
-  const canvas = card.querySelector('canvas');
-  canvas.width = numerator * units;
-  canvas.height = denominator * units;
-  const context = canvas.getContext('2d');
-  if (!context) {
-    card.querySelector('.grid-description').textContent = 'Canvas unavailable. Use the full-detail reference.';
-    return;
-  }
-  context.imageSmoothingEnabled = false;
-  context.drawImage(source, 0, 0, canvas.width, canvas.height);
-  const available = Math.max(1, canvas.parentElement.clientWidth - 26);
-  const scale = Math.max(1, Math.min(Math.floor(available / canvas.width), Math.floor(160 / canvas.height)));
-  canvas.style.width = `${canvas.width * scale}px`;
-  canvas.style.height = `${canvas.height * scale}px`;
-  // Compare source and pixel treatment at the same physical display size.
-  source.style.width = canvas.style.width;
-  source.style.height = canvas.style.height;
-  card.querySelector('.grid-description').textContent = `${canvas.width} × ${canvas.height} source pixels · ${scale}× display`;
-  canvas.setAttribute('aria-label', `${card.querySelector('h3').textContent} flag, ${canvas.width} by ${canvas.height} pixel comparison`);
-  card.dataset.gridWidth = canvas.width;
-  card.dataset.gridHeight = canvas.height;
-  card.dataset.displayScale = scale;
+const flagNames = { br: 'Brazil', mx: 'Mexico', es: 'Spain', ph: 'Philippines' };
+let flagCountry = 'br';
+const flagMapImage = document.getElementById('country-flag-map');
+const flagMapScene = flagMapImage.parentElement;
+
+function flagMapReady() {
+  if (!flagMapImage.complete || !flagMapImage.naturalWidth) return;
+  flagMapImage.dataset.loaded = 'true';
+  flagMapScene.setAttribute('aria-busy', 'false');
+  delete flagMapScene.dataset.failed;
+  const name = flagNames[flagCountry];
+  const possessive = name.endsWith('s') ? `${name}'` : `${name}'s`;
+  document.getElementById('flag-map-status').textContent = document.getElementById('flag-on-map').checked
+    ? `${possessive} flag is displayed inside its country shape.`
+    : `${name} is highlighted. Turn on the fill to preview its flag inside the shape.`;
 }
 
-flagCards.forEach((card) => {
-  const image = card.querySelector('.source-flag');
-  image.addEventListener('load', () => renderFlag(card));
-  image.addEventListener('error', () => {
-    card.querySelector('.grid-description').textContent = 'Flag source did not load. Check the local asset.';
+flagMapImage.addEventListener('load', flagMapReady);
+flagMapImage.addEventListener('error', () => {
+  flagMapImage.dataset.loaded = 'false';
+  flagMapScene.setAttribute('aria-busy', 'false');
+  flagMapScene.dataset.failed = 'true';
+  document.getElementById('flag-map-status').textContent = 'Map preview did not load. The complete flag is still available beside it.';
+});
+flagMapReady();
+
+function updateFlagMap() {
+  const name = flagNames[flagCountry];
+  const possessive = name.endsWith('s') ? `${name}'` : `${name}'s`;
+  const filled = document.getElementById('flag-on-map').checked;
+  const image = document.getElementById('country-flag-map');
+  flagMapScene.setAttribute('aria-busy', 'true');
+  delete flagMapScene.dataset.failed;
+  image.dataset.loaded = 'false';
+  image.src = `assets/flag-maps/${flagCountry}-${filled ? 'flag' : 'outline'}.svg`;
+  image.alt = filled ? `${possessive} clean flag clipped inside its country outline, with neighboring countries visible`
+    : `${name} highlighted on the map, with neighboring countries visible`;
+  document.getElementById('flag-map-name').textContent = name;
+  const reference = document.getElementById('map-reference-flag');
+  reference.src = `assets/flags/${flagCountry}.svg`;
+  reference.alt = `Complete ${name} flag`;
+  document.getElementById('flag-map-status').textContent = `Loading ${name} map preview…`;
+  document.querySelectorAll('[data-map-country]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.mapCountry === flagCountry));
   });
-  renderFlag(card);
+}
+
+document.querySelectorAll('[data-map-country]').forEach((button) => {
+  button.addEventListener('click', () => {
+    flagCountry = button.dataset.mapCountry;
+    updateFlagMap();
+  });
 });
-document.querySelectorAll('[name="flag-detail"]').forEach((input) => {
-  input.addEventListener('change', () => flagCards.forEach(renderFlag));
-});
-const flagResizeObserver = new ResizeObserver((entries) => {
-  entries.forEach((entry) => renderFlag(entry.target.closest('[data-flag]')));
-});
-flagCards.forEach((card) => flagResizeObserver.observe(card.querySelector('.pixel-stage')));
+document.getElementById('flag-on-map').addEventListener('change', updateFlagMap);

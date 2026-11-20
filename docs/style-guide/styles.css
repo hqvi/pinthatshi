@@ -96,6 +96,7 @@ h2 { font-size: 27px; line-height: 1.35; margin: 13px 0 18px; }
 .sprite-cell { border: 1px solid var(--pencil); background: var(--card); }
 .sprite-stage { min-height: 112px; display: grid; place-items: center; border-bottom: 1px solid var(--pencil); background-image: linear-gradient(#b9a67e22 1px, transparent 1px), linear-gradient(90deg, #b9a67e22 1px, transparent 1px); background-size: 12px 12px; }
 .sprite-stage img { image-rendering: pixelated; }
+.sprite-stage img.flag-image { image-rendering: auto; object-fit: contain; }
 figcaption { padding: 12px 14px; font-size: 21px; }
 figcaption span { display: block; font-size: 15px; margin-top: 3px; color: var(--ink-2); }
 .sprite-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; font-size: 19px; line-height: 1.4; }

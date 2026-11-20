@@ -1,4 +1,4 @@
-# Completion and detailed-flag lab
+# Completion depth and country-shaped flags
 
 Run `node scripts/preview.mjs` from the repository root, then open `/interaction-lab/`.
 
@@ -17,29 +17,37 @@ The purpose is state indication and spatial continuity: a completed map becomes 
 
 The public Farflung parts stylesheet confirmed postcard-specific styling and a separate stamp effect. It uses Oswald for the card face; the site's loaded fonts also include Yellowtail. Their upstream files and license notices are bundled locally for the prototype. This does not establish the exact timing or physics of every reference transition.
 
-## Detailed flags
+## Completed-map depth
 
-Mexico, Spain, Brazil, and the Philippines compare the full-detail source against coarse, medium, and fine raster grids. Source proportions remain exact by using grid dimensions that are multiples of each flag's aspect ratio. Display sizes use integer scaling.
+The live Farflung completion effect was inspected by finishing a Central Asia sheet, observing the raised map, and observing the postcard. The current public `learn-CdQkcsgz.js` module confirms a separate `lc-print` canvas with a down/right offset union, original-shape subtraction, and a thin outline clearance. The source uses 5px for map widths below 700px and 7px otherwise, with the accent fill at .82 alpha. Its postcard capture includes that canvas.
 
-Fine is the initial treatment for these intricate examples. Coarse deliberately demonstrates lost detail. This is source-driven rasterization, not a complete hand-polished sprite set. Do not turn the coarse example into a harder quiz difficulty: it removes information rather than testing geographic knowledge.
+Our independent SVG preview reproduces that layer structure using a stationary mask and a shifted silhouette, avoiding red seams between adjacent countries. The static illustration uses a 7-unit offset that scales with the image; exact screen-pixel behavior belongs in the actual renderer. **Raised map edge** switches both the main map and postcard between the same flat/raised assets. There is no blur filter.
 
-The final game must preserve identifying symbols and offer an enlarged full-detail reference. Individual production flags require checks; do not use a generator to invent coats of arms, lettering, or stars. Country-map fills remain secondary to the complete rectangular flag.
+## Normal flag images and map fills
+
+The user chose normal full-detail flags, replacing the earlier pixel-grid experiment. No flag canvas, pixel filter, or simplified coat of arms remains in the active preview.
+
+Brazil, Mexico, Spain, and the Philippines each have a contextual map preview. The unchanged flag is embedded in a self-contained SVG, sized explicitly to cover the geographic bounding rectangle at its original aspect ratio, and clipped to the selected polygon. Explicit dimensions avoid letterboxing inside nested SVG images. Neighboring countries remain visible. The separate complete flag remains visible because clipping an irregular outline naturally removes parts of the rectangular design.
+
+Spain uses an Iberian crop, including nearby islands rather than extending the frame to the Canary Islands. These are viewport examples, not coverage decisions. A busy/loading state prevents a new country label from being paired with the previously loaded map while its replacement image loads.
+
+Switch country or turn off **Fill the country with its flag** to compare the highlighted outline. These are correct-answer appearance previews, not live quiz selection or final geographic coverage.
 
 ### Flag source
 
 - Repository: https://github.com/hampusborgos/country-flags.
 - Pinned revision: `c09927e63705529bbf59ca6684cd9b23225dddad`.
-- Files: `svg/mx.svg`, `svg/es.svg`, `svg/br.svg`, `svg/ph.svg`.
+- Files: `svg/mx.svg`, `svg/es.svg`, `svg/br.svg`, `svg/ph.svg`, `svg/fr.svg`, `svg/jp.svg`. France and Japan are used in the visual reference sheet.
 - Original files are retained without recoloring or geometry edits. The upstream README describes Wikimedia Commons provenance and its public-domain treatment; production review should retain item-specific source information.
 
 ### Static map source
 
-- Natural Earth, v5.1.2, `ne_110m_admin_0_countries.geojson`.
-- https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_110m_admin_0_countries.geojson.
+- Natural Earth, v5.1.2, `ne_50m_admin_0_countries.geojson`.
+- https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_countries.geojson.
 - https://www.naturalearthdata.com/about/terms-of-use/.
-- The map is an independently rendered South America crop with illustrative colors. It does not set final coverage, political labels, or the playable dataset. At 1:110m it is too coarse for final small-country selection.
-- Regenerate with `node scripts/create-demo-map.mjs PATH_TO_SOURCE_GEOJSON`. The default source path is `.preview/ne_110m_admin_0_countries.geojson`, which is not tracked.
+- Maps are independently rendered Mercator crops with illustrative colors. They do not set final coverage, political labels, or the playable dataset. 1:50m geometry still isn't the final small-country selection dataset.
+- Regenerate with `node scripts/create-demo-map.mjs PATH_TO_SOURCE_GEOJSON` and `node scripts/create-flag-maps.mjs PATH_TO_SOURCE_GEOJSON`. Both use `scripts/map-art.mjs`. The default source is `.preview/ne_50m_admin_0_countries.geojson`, which is not tracked.
 
 ## Checks before application integration
 
-Check completed/reset states, interruption, rapid replay, keyboard activation, reduced motion, and a phone viewport. Check that every source flag loads, aspect ratios remain unchanged, and canvas scaling is integral. Judge emblem readability visually; source pixel count alone cannot establish that a flag is suitable for learning.
+Check completion/reset, interruption, keyboard activation, reduced motion, and phone layout. Compare flat/raised maps in both views. Verify every country switch and fill toggle, load the embedded flag image, and keep the complete flag alongside the clipped map. Judge clipping visually, especially for archipelagos and outlying islands.

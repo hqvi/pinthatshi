@@ -6,7 +6,7 @@ Status: wireframe layout approved; visual reference established. The playable ap
 
 A map-first geography playground that makes it enjoyable to learn where places are, what they're called, their capitals, and their flags. Keep the Farflung Learn Countries visual direction: parchment panels, pixel text, blue oceans, fine coastlines, textured surfaces, and region cards.
 
-**Visual requirement:** target a 1:1 match to Farflung's Learn Countries interface, not a generic retro reinterpretation. The approved wireframes establish layout only. Replace their placeholder colors and fonts with the measured system. Use souvenir-style, crisp pixel-grid sprites selectively for objects and flags while preserving detailed map geometry. See the [visual direction](visual-direction.md) and [reference sheet](style-guide/index.html).
+**Visual requirement:** target a 1:1 match to Farflung's Learn Countries interface, not a generic retro reinterpretation. The approved wireframes establish layout only. Replace their placeholder colors and fonts with the measured system. Use souvenir-style pixel sprites for small objects; flags use normal full-detail images. Preserve detailed map geometry and the hard offset completed-map depth layer. See the [visual direction](visual-direction.md) and [reference sheet](style-guide/index.html).
 
 The first playable version covers Find Countries worldwide. Everything is freely selectable, with suggested learning paths from smaller regions to larger challenges.
 
@@ -22,7 +22,7 @@ The first playable version covers Find Countries worldwide. Everything is freely
 | Capitals | Pin Capitals | Read a capital name; pin the city's actual position. | Show the actual location and distance from the submitted pin. |
 | Capitals | Name All Capitals | Recall all capitals in the chosen area. | Reveal each capital marker and associated country. |
 | Capitals | Name the Capital | See a highlighted country; type its capital. | Confirm the capital and reveal its marker. |
-| Flags | Map the Flag | See a pixel-style flag; select its place on the map. | Fill the selected shape with its flag, clipped to the boundary. |
+| Flags | Map the Flag | See a clean full-detail flag; select its place on the map. | Fill the selected shape with the flag image, clipped to the boundary, and retain a complete rectangular reference. |
 | Flags | Name the Flag | See a flag; type the place it represents. | Reveal its name and geographic context. |
 | Flags | Match the Flag | See a highlighted place; choose its flag from four options. | Confirm the choice and show the flag on the map. |
 | Flags | Name All Flags | See a flag collection for the chosen area; name the places represented. | Label accepted flags and reveal their locations. |

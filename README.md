@@ -13,7 +13,7 @@ Find countries, remember capitals, recognize flags, and eventually learn the reg
 - [Wireframe guide](docs/wireframes.md)
 - [Visual direction and sprite rules](docs/visual-direction.md)
 - [Actual font and color reference sheet](docs/style-guide/index.html)
-- [Completion motion and detailed-flag comparison](docs/interaction-lab/index.html)
+- [Completion depth and country-shaped flag preview](docs/interaction-lab/index.html)
 - [UX and motion requirements](docs/ux-motion.md)
 - [Farflung design inspection](docs/farflung-design-audit.md)
 
@@ -31,9 +31,9 @@ Then visit the local address printed in the terminal. Press `Ctrl+C` in that ter
 
 The walkthrough includes Home, Games, Areas, Play, and Results. It uses illustrative content and map placeholders. Buttons demonstrate navigation; they don't check geography answers or save progress yet.
 
-The wireframe colors and system fonts are temporary. The [visual reference sheet](docs/style-guide/index.html) uses locally bundled VT323 and Bungee, the measured Farflung palette, and original pixel-grid object/flag examples. With the preview running, open `/style-guide/` to see it. This is preparation for v0.2, not a completed map or 1:1 application.
+The wireframe colors and system fonts are temporary. The [visual reference sheet](docs/style-guide/index.html) uses locally bundled VT323 and Bungee, the measured Farflung palette, pixel-grid object examples, and normal full-detail flag images. With the preview running, open `/style-guide/` to see it. This is preparation for v0.2, not a completed map or 1:1 application.
 
-The [interaction lab](docs/interaction-lab/index.html) adds a replayable completion-postcard experiment and detailed flag comparisons. Open `/interaction-lab/` with the preview running. It uses illustrative results, source-driven flag rasterization, and a static Natural Earth map crop; the real game and geographic dataset are still to be built.
+The [interaction lab](docs/interaction-lab/index.html) adds a replayable completion postcard with a hard raised-map edge, plus clean flags clipped into country shapes. Open `/interaction-lab/` with the preview running. It uses illustrative results and independent static Natural Earth crops; the real game and geographic dataset are still to be built.
 
 ## First playable milestone
 

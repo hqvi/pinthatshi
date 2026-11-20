@@ -14,7 +14,7 @@ The approved appearance includes behavior as well as colors. Completion should f
 | Silhouette answer | Reveal surrounding geography so the shape is connected to its real location. |
 | Flag answer | Confirm the correct place and reveal the flag inside its boundary while retaining a complete rectangular flag reference. |
 
-The [interaction lab](interaction-lab/index.html) implements the completion experiment and detailed-flag comparison. The application, map interactions, and the other rows above remain future work. The prototype isn't proof that all Farflung timing, camera behavior, or physics has been matched.
+The [interaction lab](interaction-lab/index.html) implements the completion experiment, raised map edge, and normal flag images clipped into four geographic contexts. The application, game interactions, and other rows above remain future work. The prototype isn't proof that all Farflung timing, camera behavior, or physics has been matched.
 
 ## Motion requirements
 
@@ -29,11 +29,17 @@ The [interaction lab](interaction-lab/index.html) implements the completion expe
 
 ## Detailed flag policy
 
-Not every flag belongs on the same tiny grid. Use a resolution appropriate to its symbols and preserve its actual proportions. Source detail and symbol recognition take priority over forcing a coarse sprite.
+The user chose normal flag images. Use full-detail SVG or adequately resolved raster artwork, preserving proportions and original symbols. Pixel-grid conversion is removed from the active previews and planned game.
 
-The lab compares Mexico, Spain, Brazil, and the Philippines at coarse, medium, and fine grids alongside their full-detail sources. Coarse is a diagnostic comparison, not a game difficulty. Fine rasterization is still a prototype and needs visual review and hand refinement where appropriate.
+The lab shows Brazil, Mexico, Spain, and the Philippines in geographic context. A proportion-preserving flag image covers the country's bounding rectangle and is clipped to its actual polygon, including holes and island components. This naturally hides some artwork outside the shape; a complete rectangular reference stays beside the map. Do not warp the flag to trace the coastline or claim every emblem will remain visible inside every country shape.
 
-Keep a larger full-detail flag available. Don't invent emblem details, replace lettering with misleading marks, omit identifying stars, or rely only on a small country-shaped flag fill. Existing 24 x 16 France/Japan examples demonstrate simple designs; they do not set the universal resolution for all flags.
+Keep a larger full-detail flag available. Don't invent emblem details, replace lettering, or omit identifying stars. Country-shaped fills supplement the full flag rather than replacing it.
+
+## Confirmed completed-map depth
+
+Inspected a live five-country round through completion and postcard reveal on 20 November 2026, then the current public rendering module. The effect is a separate `lc-print` canvas: the answered land union is offset down/right, and the original union plus its outline is removed, leaving the hard side face. The source chooses 5 CSS pixels below a 700px map width and 7px at wider widths, with the red accent at .82 alpha. The postcard capture includes this layer.
+
+The independent static preview uses an equivalent SVG mask with a 7-unit offset and .82 opacity, reused in both map views. Its offset scales with the illustration; the actual application's renderer must use the measured screen-pixel rule. This distinction remains part of final fidelity checking.
 
 ## Next integration step
 

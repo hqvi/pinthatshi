@@ -85,3 +85,12 @@ Hosting is a later milestone. The initial source of truth is this GitHub reposit
 - Added Mexico, Spain, Brazil, and Philippines source-versus-pixel comparisons, preserving flag proportions and offering full-detail inspection.
 - Kept prototype motion separate from claims of an exact animation match. The next implementation step is the real v0.2 application shell and area-picker/map surface.
 - Browser checks covered completion, skip/reset, keyboard focus, reduced-motion transforms, and coarse/fine flag switching. The postcard fits the phone stage, flag ratios and integer scaling are preserved, source/pixel comparisons share display sizes, and no horizontal overflow or console errors were observed.
+
+### 2026-11-20 — Raised maps and normal flags
+
+- The user replaced the earlier pixel-flag direction with normal full-detail flag images.
+- Inspected Farflung live through completion and postcard reveal; confirmed the hard red exterior offset, its 5/7px width rule, .82 alpha, and inclusion in the postcard capture.
+- Added an independent masked depth layer shared by the main and postcard map previews, with a flat/raised comparison toggle.
+- Removed active flag-grid conversion, switched the visual sheet to clean flag images, and added four contextual country-shaped flag previews with a full-flag reference.
+- Updated static preview geometry to Natural Earth v5.1.2 1:50m. Application coverage and exact screen-pixel rendering remain separate milestones.
+- Verified the shared raised map in the completion postcard, all four flag switches and outline toggles, phone layout, and clean reference images. Syntax, local HTML links, exact embedded flag sources, image coverage, and aspect ratios pass checks; no browser console errors were observed.

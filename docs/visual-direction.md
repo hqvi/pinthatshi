@@ -10,7 +10,7 @@ Use the [measured design inspection](farflung-design-audit.md) as the starting s
 
 The [visual reference sheet](style-guide/index.html) previews the measured fonts and palette, recreated surface effects, and original grid-based sprite examples. It is a design reference, not v0.2's finished application.
 
-The user also approved that appearance and requested the Farflung-style completion/postcard flow. The [UX and motion specification](ux-motion.md) and [interaction lab](interaction-lab/index.html) cover the completion experiment, reduced motion, and resolution comparisons for detailed flags. These extend the accepted visual direction rather than replacing the approved layouts.
+The user also approved that appearance and requested the Farflung-style completion/postcard flow. The [UX and motion specification](ux-motion.md) and [interaction lab](interaction-lab/index.html) cover completion, map depth, and clean flag images clipped into country shapes. The later explicit choice of normal flag images supersedes the earlier pixel-flag experiment.
 
 ## What changes after the wireframes
 
@@ -23,7 +23,9 @@ The user also approved that appearance and requested the Farflung-style completi
 | Country geometry | Detailed real geography with legible boundaries, including small places. Don't apply a blanket pixelation filter. |
 | Frames and buttons | Thin ink lines, double outlines, hard offset shadows, cream/navy/red/gold hierarchy. |
 | Desk surround | Dark, restrained wood texture behind the atlas frame, following the reference. |
-| Small objects and flags | Deliberately drawn pixel-grid assets with crisp integer scaling. |
+| Small objects | Deliberately drawn pixel-grid assets with crisp integer scaling. |
+| Flags | Normal full-detail SVG or suitably resolved raster images, with original proportions and identifying details. No pixel filter. |
+| Completed map | Hard red offset exterior of the answered land union; include the same layer in the postcard snapshot. |
 
 Use the fonts from their upstream distributions, stored locally with their license files. The reference sheet contains those fonts; it doesn't depend on a third-party font service at runtime.
 
@@ -44,10 +46,9 @@ This confirms that a pixel sprite can be SVG. It doesn't have to be a blurry enl
 - Start small interface objects on a 16 x 16 logical grid; render at integer multiples such as 32, 48, and 64px.
 - Use a consistent one-cell contour, limited shading, clear silhouettes, and the measured ink/paper palette where appropriate.
 - Use SVG with integer pixel geometry or a deliberately drawn PNG. Raster assets require nearest-neighbor scaling; SVG assets require crisp edges.
-- Flags need their own proportions: e.g. 24 x 16 or 32 x 16 logical cells. Increase source resolution when an emblem cannot remain identifiable. Don't force all flags into a 16 x 16 square.
-- Keep national colors and identifying symbols recognizable. Artistic texture must not obscure what the player needs to learn. Production flag artwork requires source verification; the reference sheet's France/Japan sprites are illustrative constructions.
+- Flags are images, not pixel sprites. Keep national colors, symbols, and proportions intact. Don't reduce them to a logical pixel grid or approximate their emblems.
 - Keep a complete rectangular flag visible alongside any flag fill clipped to a country's geographic shape. Don't distort flag art to trace the coastline.
-- Use sprites for small objects such as pins, books, stamps, and flag artwork. Keep panels, typography layout, map geometry, and interactions at normal browser resolution.
+- Use sprites for small objects such as pins, books, and stamps. Keep flags, panels, typography layout, and map geometry at normal browser resolution.
 - No emoji as the final icon or flag system, no soft enlargement, no arbitrary gradients or 3D lighting on pixel assets.
 
 These rules establish an asset style, not a new collectible or achievement feature. Such mechanics remain separate product decisions.

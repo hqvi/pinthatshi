@@ -63,6 +63,8 @@ The frame inset token was 12px. Controls generally use square corners, one- or t
 
 ## Remaining limits and acceptance checks
 
+Follow-up completion inspection: finishing a live five-country sheet confirmed the separate `lc-print` depth canvas, then the same raised map in the postcard. The current public learn module applies a 5px or 7px down/right offset to the answered land union, subtracts the original union plus an outline clearance, and uses the accent fill at .82 alpha. The effect is a hard side face, not a CSS blur. See [UX and motion](ux-motion.md) for the implementation distinction between the static preview and the actual renderer.
+
 - A pixel-perfect match is not established. Custom drawing behavior and texture generation need implementation and visual iteration.
 - The live site is responsive and includes advertising reservations. Do not infer a fixed sidebar ratio from one viewport. At the inspected 1254px width, the sidebar occupied roughly 474px; the user's wider reference gives the map substantially more room.
 - Validate global view, Western Europe zoom, small islands, panning, zooming, and country selection. Borders must remain aligned with rendered land at every zoom.
