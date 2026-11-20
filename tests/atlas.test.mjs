@@ -63,3 +63,10 @@ test('card thumbnails use the same place colors as live selection', async () => 
   const artwork = await readFile(new URL('../src/assets/world-color.svg', import.meta.url), 'utf8');
   for (const feature of geography.features) assert.ok(artwork.includes(`<use href="#land-${feature.id}" fill="${feature.properties.color}"/>`), feature.id);
 });
+test('the published game roster has 197 countries and 56 areas, without misleading parent labels', () => {
+  assert.equal(geography.features.filter(f => f.properties.kind === 'country').length, 197);
+  assert.equal(geography.features.filter(f => f.properties.kind === 'area').length, 56);
+  for (const id of ['KOS', 'PSX', 'VAT', 'TWN']) { assert.equal(get(id).kind, 'country'); assert.equal(get(id).parent, ''); }
+  assert.equal(get('SOL').kind, 'area');
+  assert.equal(get('GUF').parent, 'France');
+});

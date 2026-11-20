@@ -6,9 +6,10 @@ Find countries, remember capitals, recognize flags, and eventually learn the reg
 
 ## Where the project is now
 
-**The interactive atlas foundation is working.** Home and the game library lead to 28 region, continent, and world scopes. The atlas supports pan/zoom, fit-to-area, geographic gridlines, edge coordinates, and place selection. Select a shape or search for a place; its fill, name plaque, and sidebar dot share one color. Geography quizzes and scoring arrive later.
+**First playable alpha — v0.4.0-alpha.1.** Find Countries works across 28 region, continent, and world scopes. Choose Countries (197 worldwide) or Countries & Areas (253), start a round, and find each named place on the atlas. Hints, reveal/skip, results, review, replay, and local perfect-time records are connected to real session state.
 
 - [Game design and complete mode catalog](docs/game-design.md)
+- [Playable roster and session rules](docs/game-roster.md)
 - [Version roadmap and how we'll build](docs/roadmap.md)
 - [Wireframe guide](docs/wireframes.md)
 - [Visual direction and sprite rules](docs/visual-direction.md)
@@ -30,9 +31,11 @@ Open the local URL printed in the terminal. `npm run build` checks TypeScript an
 
 The area screen now uses MapLibre with bundled Natural Earth geometry, without external tiles or API keys. Drag or use arrow keys to pan; use the buttons, keyboard plus/minus, or Ctrl+wheel to zoom. Touch interaction uses two fingers so scrolling the page remains possible. The coverage toggle filters selectable places; out-of-scope geography stays visible as context. Search is scope-specific and also provides keyboard access to tiny places, which have circular selection aids on the map.
 
-Home and card thumbnails remain static illustrations. If interactive rendering fails, an overview and retry action stay available. The [253-place exploration checklist](docs/geography-checklist.md) records the current source roster and grouping; the final quiz roster and geographic exceptions still need auditing. Map styling and selected-place plaques are implemented, while answered-country labels, completion depth, and postcard captures await real session state. This is a checkpoint, not a declaration that v0.3 or the visual fidelity work is complete.
+Home and card thumbnails remain static illustrations. If interactive rendering fails, an overview and retry action stay available. The [253-place checklist](docs/geography-checklist.md) and [roster policy](docs/game-roster.md) publish this version's exact grouping and geographic choices. Answered places get collision-aware plaques; completed maps and postcards include the hard red depth edge. The postcard captures the actual rendered map and your results. Visual matching and broader device/performance refinements remain in progress.
 
-`npm test` checks coordinate wrapping, date-line bounds, scope and coverage filtering, overseas relationships, search normalization, and geographic data integrity. GitHub Actions runs these checks alongside the production build.
+The current round saves locally and resumes after refresh or through Continue on Home. Perfect times require a complete full-scope round without mistakes, hints, or skips. Review rounds cannot replace full-map records. The timer pauses when the tab is hidden, the map is unavailable, or you press Pause. Keyboard users can pan with arrow keys and press Enter to answer at the crosshair. Search remains available in exploration, rather than providing answers during the quiz. Local storage belongs to the browser/origin; this alpha has no account or cross-device sync.
+
+`npm test` runs 17 checks for geography, coordinate wrapping, every scope/coverage combination, scoring, hints/skips, review, save validation, record separation, and label layout. GitHub Actions runs these checks alongside the production build.
 
 ## Open the original design previews
 
@@ -54,7 +57,7 @@ The [interaction lab](docs/interaction-lab/index.html) adds a replayable complet
 
 ## First playable milestone
 
-**Find Countries across the whole world:** practice by subregion, continent, or worldwide, with hints, found and remaining lists, results, and local best records. Include a clearly labeled **Countries & Areas** option so overseas areas aren't silently left out.
+**Available in this alpha:** Find Countries across the whole world, by subregion or continent, with hints, found/remaining lists, reveal/skip, a completed-map postcard, review, and local perfect-time records. Countries & Areas includes overseas places such as French Guiana.
 
 Later versions add country recall, capitals, flags, mistake review, and country packs. The Philippines comes first, followed by the USA and UK.
 

@@ -4,19 +4,22 @@ import { continents, findArea, world, type Area } from './data/areas';
 import compass from '../docs/style-guide/sprites/compass.svg';
 import type { Selection } from './components/InteractiveAtlas';
 import type { Place } from './map/geography';
+import { ContinuePractice, StartRound } from './components/PracticeLinks';
+import { writeSession } from './game/storage';
 
 const InteractiveAtlas = lazy(() => import('./components/InteractiveAtlas').then(module => ({ default: module.InteractiveAtlas })));
 const PlacePicker = lazy(() => import('./components/PlacePicker').then(module => ({ default: module.PlacePicker })));
+const FindCountries = lazy(() => import('./components/FindCountries').then(module => ({ default: module.FindCountries })));
 
-type Screen = 'home' | 'games' | 'areas';
+type Screen = 'home' | 'games' | 'areas' | 'play';
 type Route = { screen: Screen; area: Area; expanded: boolean };
 function readRoute(): Route {
   const [path, query = ''] = window.location.hash.slice(1).split('?');
   const params = new URLSearchParams(query);
-  return { screen: path === '/games' ? 'games' : path === '/learn-countries' ? 'areas' : 'home', area: findArea(params.get('area') ?? undefined), expanded: params.get('coverage') !== 'countries' };
+  return { screen: path === '/play' ? 'play' : path === '/games' ? 'games' : path === '/learn-countries' ? 'areas' : 'home', area: findArea(params.get('area') ?? undefined), expanded: params.get('coverage') !== 'countries' };
 }
 function makeHash(route: Route) {
-  const path = route.screen === 'areas' ? '/learn-countries' : route.screen === 'games' ? '/games' : '/';
+  const path = route.screen === 'play' ? '/play' : route.screen === 'areas' ? '/learn-countries' : route.screen === 'games' ? '/games' : '/';
   return `#${path}?area=${route.area.id}&coverage=${route.expanded ? 'areas' : 'countries'}`;
 }
 
@@ -58,34 +61,36 @@ export function App() {
   const showMapOnPhone = () => { if (window.matchMedia('(max-width: 760px)').matches) document.querySelector('.map-stage')?.scrollIntoView({ block: 'start' }); };
   const selectArea = (area: Area) => { updateRoute({ ...route, area }); showMapOnPhone(); };
   const selectPlace = (place: Place | null, focus = false) => { setSelection(previous => place ? { place, focus, revision: (previous?.revision ?? 0) + 1 } : null); if (focus) showMapOnPhone(); };
-  const backLabel = route.screen === 'areas' ? 'Games' : 'Home';
+  const startRound = (fresh: boolean, area = route.area) => { if (fresh) writeSession(null); updateRoute({ ...route, area, screen: 'play' }); };
+  const backLabel = route.screen === 'play' ? 'Areas' : route.screen === 'areas' ? 'Games' : 'Home';
 
   return <>
-    <a href="#main-content" className="skip-link" onClick={e => { e.preventDefault(); heading.current?.focus(); }}>Skip to content</a>
+    <a href="#main-content" className="skip-link" onClick={e => { e.preventDefault(); document.querySelector<HTMLElement>('h1[tabindex]')?.focus(); }}>Skip to content</a>
     <main id="main-content" className={`atlas-book screen-${route.screen}`}>
       <header className="book-header">
-        {route.screen === 'home' ? <span className="edition">Your geography playground</span> : <button className="back-button" onClick={() => navigate(route.screen === 'areas' ? 'games' : 'home')}><span className="back-mark" aria-hidden="true">‹</span><span><small>Back to</small>{backLabel}</span></button>}
+        {route.screen === 'home' ? <span className="edition">Your geography playground</span> : <button className="back-button" onClick={() => navigate(route.screen === 'play' ? 'areas' : route.screen === 'areas' ? 'games' : 'home')}><span className="back-mark" aria-hidden="true">‹</span><span><small>Back to</small>{backLabel}</span></button>}
         <button className="small-wordmark" onClick={() => navigate('home')} aria-label="pinthatshi home">pinthatshi</button>
-        <span className="edition">{route.screen === 'areas' ? 'Find Countries' : 'World atlas'}</span>
+        <span className="edition">{route.screen === 'areas' || route.screen === 'play' ? 'Find Countries' : 'World atlas'}</span>
       </header>
 
       {route.screen === 'home' ? <section className="home-scene" aria-labelledby="home-title">
         <div className="home-atlas"><AtlasMap area={world} decorative /></div>
         <div className="title-sign paper"><span className="eyebrow">A little more of the world, every time.</span><h1 ref={heading} id="home-title" tabIndex={-1}>pinthatshi</h1><span className="sign-rule" /><p>Find places. Learn their names.<br />Get to know your world.</p><span className="sign-coordinate">A WORLD WORTH KNOWING</span></div>
-        <div className="home-actions paper"><span className="eyebrow">Unfold your next adventure</span><button className="button button-navy" onClick={() => navigate('games')}>Play & Learn</button><div className="home-tags"><span>Countries</span><span>Capitals</span><span>Flags</span></div></div>
+        <div className="home-actions paper"><span className="eyebrow">Unfold your next adventure</span><button className="button button-navy" onClick={() => navigate('games')}>Play & Learn</button><ContinuePractice onContinue={saved => updateRoute({ screen: 'play', area: findArea(saved.scopeId), expanded: saved.expanded })} /><div className="home-tags"><span>Countries</span><span>Capitals</span><span>Flags</span></div></div>
         <img className="compass" src={compass} width="48" height="48" alt="" />
       </section> : route.screen === 'games' ? <section className="library" aria-labelledby="games-title">
         <div className="library-intro"><span className="eyebrow">The game library</span><h1 ref={heading} id="games-title" tabIndex={-1}>Play & Learn</h1><p>Start small. Get to know the whole world.</p></div>
         <div className="collections">{futureGames.map((collection, i) => <article className="collection paper" key={collection.name}><div className="collection-art"><AtlasMap area={continents[i * 2].area} colorful decorative /><span>{collection.name}</span></div><div className="collection-content"><h2>{collection.name}</h2><p>{collection.description}</p>{i === 0 ? <button className="mode-button" onClick={() => navigate('areas')}><strong>Find Countries</strong><span>Choose a region to explore</span></button> : null}<ul>{collection.modes.map(mode => <li key={mode}>{mode}</li>)}</ul><span className="planned-label">{i === 0 ? 'More country games planned' : 'Planned collection'}</span></div></article>)}</div>
         <div className="library-bottom"><article><span className="eyebrow">Country packs · planned</span><h2>Closer to home</h2><p>Philippine regions and provinces first.<br />USA and UK follow.</p></article><article><span className="eyebrow">Practice · planned</span><h2>Review Mistakes</h2><p>Revisit the places you’re still learning.</p></article></div>
-      </section> : <section className="area-layout" aria-labelledby="areas-title">
+      </section> : route.screen === 'play' ? <Suspense fallback={<p className="quiz-loading">Opening Find Countries…</p>}><FindCountries key={`${route.area.id}:${route.expanded}`} area={route.area} expanded={route.expanded} onExit={() => navigate('areas')} onNext={area => startRound(true, area)} /></Suspense> : <section className="area-layout" aria-labelledby="areas-title">
         <div className="map-stage"><Suspense fallback={<AtlasMap area={route.area} />}><InteractiveAtlas area={route.area} expanded={route.expanded} selection={selection} onSelect={place => selectPlace(place)} /></Suspense><div className="map-caption paper"><span className="eyebrow">Explore the atlas</span><strong>{route.area.name}</strong><span>{route.expanded ? 'Countries & Areas' : 'Countries'}</span></div><img className="compass" src={compass} width="48" height="48" alt="" /></div>
         <aside className="area-panel paper"><div className="panel-intro"><h1 ref={heading} id="areas-title" tabIndex={-1}>Learn Countries</h1><p>Explore a region, a continent, or the whole world.</p><label className="coverage-option"><input type="checkbox" checked={route.expanded} onChange={e => updateRoute({ ...route, expanded: e.target.checked })} /><span>Include territories & overseas areas<small>Countries & Areas</small></span></label></div>
-          <div className="selection-readout" role="status"><span className="eyebrow">{selection ? 'Selected place' : 'Your area'}</span><strong>{selection ? <><i className="place-dot" style={{ backgroundColor: selection.place.color }} />{selection.place.name}</> : route.area.name}</strong><span>{selection?.place.kind === 'area' ? `Area · ${selection.place.parent || selection.place.region}` : 'Explore freely · quiz gameplay comes next'}</span></div>
+          <div className="selection-readout" role="status"><span className="eyebrow">{selection ? 'Selected place' : 'Your area'}</span><strong>{selection ? <><i className="place-dot" style={{ backgroundColor: selection.place.color }} />{selection.place.name}</> : route.area.name}</strong><span>{selection?.place.kind === 'area' ? `Area · ${selection.place.parent || selection.place.region}` : 'Explore the map, or start a round.'}</span></div>
+          <StartRound area={route.area} expanded={route.expanded} onStart={startRound} />
           <div className="area-scroll"><details className="explore-places"><summary>Explore places in this area</summary><Suspense fallback={<p>Loading place search…</p>}><PlacePicker area={route.area} expanded={route.expanded} onSelect={place => selectPlace(place, true)} /></Suspense></details>{continents.map(continent => <section className="continent-section" key={continent.area.id} aria-labelledby={`heading-${continent.area.id}`}><h2 id={`heading-${continent.area.id}`}>{continent.name}</h2><div className="area-grid">{continent.regions.map(area => <AreaCard key={area.id} area={area} selected={route.area.id === area.id} onSelect={selectArea} />)}<AreaCard area={continent.area} selected={route.area.id === continent.area.id} onSelect={selectArea} wide /></div></section>)}<section className="continent-section" aria-labelledby="heading-world"><h2 id="heading-world">Everything</h2><AreaCard area={world} selected={route.area.id === world.id} onSelect={selectArea} wide /></section></div>
         </aside>
       </section>}
-      <footer className="book-footer"><span>pinthatshi · atlas edition</span><span>Interactive atlas · quizzes in development</span></footer>
+      <footer className="book-footer"><span>pinthatshi · atlas edition</span><span>Find Countries · early playable</span></footer>
     </main>
   </>;
 }

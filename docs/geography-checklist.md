@@ -1,10 +1,10 @@
 # Interactive atlas: source checklist
 
-This is the current exploration roster, not the finalized quiz checklist. 253 mapped places use Natural Earth v5.1.2 1:50m countries and map units. Membership, aliases, disputed-place options, and any missing small places must be audited before v0.4. Source classifications are preserved below; they are not assertions of recognition or sovereignty.
+This is the first playable roster. Countries contains 197 entries; expanded coverage contains 253. See the [roster policy](game-roster.md) for inclusions and primary-region choices. 253 mapped places use Natural Earth v5.1.2 1:50m countries and map units. This version freezes the practice grouping. Future roster revisions must change the dataset version so records remain comparable. Source classifications are preserved below; they are not assertions of recognition or sovereignty.
 
 Overseas map units are split for France, Netherlands, Portugal, Norway, New Zealand, and the source's Indian Ocean Territories. Mainland France and Portugal retain FRA/PRT identifiers. The UK, Belgium, Bosnia and Herzegovina, and other internally subdivided countries remain together. Antarctica is context outside this practice roster and is currently omitted. Region membership follows the source SUBREGION; Northern Africa maps to its Northern Africa/Western Sahara entries, and the Americas use Northern America, Central America, Caribbean, and South America. Scope filters use these names, not bounding-box containment.
 
-The Countries setting excludes dependencies, associated areas, and source-disputed/indeterminate entries; expanded coverage includes them for exploration. This initial grouping is a documented display policy, not the final game definition. A small-place marker is a selection aid at the source label anchor, not a replacement geographic boundary.
+Countries includes the explicitly documented Palestine and Kosovo overrides; Somaliland remains in expanded coverage. Other dependencies and associated/source-disputed areas remain in expanded coverage. The game grouping is distinct from the original source type shown in the table. A small-place marker is a selection aid at the source label anchor, not a replacement geographic boundary.
 
 Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_countries.geojson), [map units](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_map_units.geojson), [public-domain terms](https://www.naturalearthdata.com/about/terms-of-use/). Regenerate using scripts/create-geography.mjs with the two downloaded files as arguments. Normal builds use committed geometry.
 
@@ -40,7 +40,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | BIH | Bosnia and Herzegovina | country | Southern Europe | — | Sovereign country |
 | BWA | Botswana | country | Southern Africa | — | Sovereign country |
 | BRA | Brazil | country | South America | — | Sovereign country |
-| IOT | British Indian Ocean Territory | area | Seven seas (open ocean) | United Kingdom | Disputed |
+| IOT | British Indian Ocean Territory | area | Seven seas (open ocean) | — | Disputed |
 | VGB | British Virgin Islands | area | Caribbean | United Kingdom | Dependency |
 | BRN | Brunei | country | South-Eastern Asia | — | Sovereign country |
 | BGR | Bulgaria | country | Eastern Europe | — | Sovereign country |
@@ -71,7 +71,6 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | DJI | Djibouti | country | Eastern Africa | — | Sovereign country |
 | DMA | Dominica | country | Caribbean | — | Sovereign country |
 | DOM | Dominican Republic | country | Caribbean | — | Sovereign country |
-| TLS | East Timor | country | South-Eastern Asia | — | Sovereign country |
 | ECU | Ecuador | country | South America | — | Sovereign country |
 | EGY | Egypt | country | Northern Africa | — | Sovereign country |
 | SLV | El Salvador | country | Central America | — | Sovereign country |
@@ -80,7 +79,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | EST | Estonia | country | Northern Europe | — | Sovereign country |
 | SWZ | Eswatini | country | Southern Africa | — | Sovereign country |
 | ETH | Ethiopia | country | Eastern Africa | — | Sovereign country |
-| FLK | Falkland Islands | area | South America | United Kingdom | Disputed |
+| FLK | Falkland Islands | area | South America | — | Disputed |
 | FRO | Faroe Islands | area | Northern Europe | Denmark | Dependency |
 | FSM | Federated States of Micronesia | country | Micronesia | — | Sovereign country |
 | FJI | Fiji | country | Melanesia | — | Sovereign country |
@@ -115,7 +114,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | IRQ | Iraq | country | Western Asia | — | Sovereign country |
 | IRL | Ireland | country | Northern Europe | — | Sovereign country |
 | IMN | Isle of Man | area | Northern Europe | United Kingdom | Country |
-| ISR | Israel | area | Western Asia | Israel | Disputed |
+| ISR | Israel | area | Western Asia | — | Disputed |
 | ITA | Italy | country | Southern Europe | — | Sovereign country |
 | CIV | Ivory Coast | country | Western Africa | — | Sovereign country |
 | JAM | Jamaica | country | Caribbean | — | Sovereign country |
@@ -126,7 +125,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | KAZ | Kazakhstan | country | Central Asia | — | Sovereignty |
 | KEN | Kenya | country | Eastern Africa | — | Sovereign country |
 | KIR | Kiribati | country | Micronesia | — | Sovereign country |
-| KOS | Kosovo | area | Southern Europe | Kosovo | Disputed |
+| KOS | Kosovo | country | Southern Europe | — | Disputed |
 | KWT | Kuwait | country | Western Asia | — | Sovereign country |
 | KGZ | Kyrgyzstan | country | Central Asia | — | Sovereign country |
 | LAO | Laos | country | South-Eastern Asia | — | Sovereign country |
@@ -150,7 +149,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | MTQ | Martinique | area | Caribbean | France | Geo unit |
 | MRT | Mauritania | country | Western Africa | — | Sovereign country |
 | MUS | Mauritius | country | Eastern Africa | — | Sovereign country |
-| MYT | Mayotte | area | Eastern Africa | France | Disputed |
+| MYT | Mayotte | area | Eastern Africa | — | Disputed |
 | MEX | Mexico | country | Central America | — | Sovereign country |
 | MDA | Moldova | country | Eastern Europe | — | Sovereign country |
 | MCO | Monaco | country | Western Europe | — | Sovereign country |
@@ -178,7 +177,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | OMN | Oman | country | Western Asia | — | Sovereign country |
 | PAK | Pakistan | country | Southern Asia | — | Sovereign country |
 | PLW | Palau | country | Micronesia | — | Sovereign country |
-| PSX | Palestine | area | Western Asia | Israel | Indeterminate |
+| PSX | Palestine | country | Western Asia | — | Indeterminate |
 | PAN | Panama | country | Central America | — | Sovereign country |
 | PNG | Papua New Guinea | country | Melanesia | — | Sovereign country |
 | PRY | Paraguay | country | South America | — | Sovereign country |
@@ -209,7 +208,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | SEN | Senegal | country | Western Africa | — | Sovereign country |
 | SRB | Serbia | country | Southern Europe | — | Sovereign country |
 | SYC | Seychelles | country | Eastern Africa | — | Sovereign country |
-| KAS | Siachen Glacier | area | Southern Asia | Kashmir | Indeterminate |
+| KAS | Siachen Glacier | area | Southern Asia | — | Indeterminate |
 | SLE | Sierra Leone | country | Western Africa | — | Sovereign country |
 | SGP | Singapore | country | South-Eastern Asia | — | Sovereign country |
 | SXM | Sint Maarten | area | Caribbean | Netherlands | Country |
@@ -217,7 +216,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | SVN | Slovenia | country | Southern Europe | — | Sovereign country |
 | SLB | Solomon Islands | country | Melanesia | — | Sovereign country |
 | SOM | Somalia | country | Eastern Africa | — | Sovereign country |
-| SOL | Somaliland | country | Eastern Africa | — | Sovereign country |
+| SOL | Somaliland | area | Eastern Africa | — | Sovereign country |
 | ZAF | South Africa | country | Southern Africa | — | Sovereign country |
 | SGS | South Georgia and the South Sandwich Islands | area | Seven seas (open ocean) | United Kingdom | Dependency |
 | KOR | South Korea | country | Eastern Asia | — | Sovereign country |
@@ -236,6 +235,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | THA | Thailand | country | South-Eastern Asia | — | Sovereign country |
 | BHS | The Bahamas | country | Caribbean | — | Sovereign country |
 | GMB | The Gambia | country | Western Africa | — | Sovereign country |
+| TLS | Timor-Leste | country | South-Eastern Asia | — | Sovereign country |
 | TGO | Togo | country | Western Africa | — | Sovereign country |
 | TKL | Tokelau | area | Polynesia | New Zealand | Geo unit |
 | TON | Tonga | country | Polynesia | — | Sovereign country |
@@ -259,7 +259,7 @@ Sources: [countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2
 | VEN | Venezuela | country | South America | — | Sovereign country |
 | VNM | Vietnam | country | South-Eastern Asia | — | Sovereign country |
 | WLF | Wallis and Futuna | area | Polynesia | France | Dependency |
-| SAH | Western Sahara | area | Northern Africa | Western Sahara | Indeterminate |
+| SAH | Western Sahara | area | Northern Africa | — | Indeterminate |
 | YEM | Yemen | country | Western Asia | — | Sovereign country |
 | ZMB | Zambia | country | Eastern Africa | — | Sovereign country |
 | ZWE | Zimbabwe | country | Eastern Africa | — | Sovereign country |

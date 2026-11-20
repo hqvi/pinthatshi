@@ -6,9 +6,11 @@ import type { Area } from '../data/areas';
 import { loadGeography, inScope, type Geography, type Place } from '../map/geography';
 import { coordinateLabel, gridStep, gridValues, longitudeInterval } from '../map/grid';
 import { AtlasMap } from './AtlasMap';
+import { captureMap, paintResolved } from '../map/completion';
 
 export type Selection = { place: Place; focus: boolean; revision: number } | null;
-type Props = { area: Area; expanded: boolean; selection: Selection; onSelect: (place: Place | null) => void };
+type Props = { area: Area; expanded: boolean; selection: Selection; onSelect: (place: Place | null) => void; mode?: 'explore' | 'quiz'; answered?: readonly string[]; complete?: boolean; hintId?: string; fitRequest?: number; onReady?: (ready: boolean) => void; onSnapshot?: (image: string | null) => void };
+const noAnswers: readonly string[] = [];
 type Tick = { position: number; value: number };
 type Grid = { width: number; height: number; longitude: Tick[]; latitude: Tick[] };
 const emptyGrid: Grid = { width: 0, height: 0, longitude: [], latitude: [] };
@@ -32,12 +34,13 @@ function fitArea(map: LibreMap, area: Area, animate = true) {
   map.fitBounds([[west, Math.max(-80, south)], [east, Math.min(80, north)]], { padding: { top: small ? 60 : 90, left: 35, right: 30, bottom: 45 }, maxZoom: 6, duration: animate ? duration() : 0 });
 }
 
-export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props) {
+export function InteractiveAtlas({ area, expanded, selection, onSelect, mode = 'explore', answered = noAnswers, complete = false, hintId, fitRequest = 0, onReady, onSnapshot }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LibreMap | null>(null);
   const dataRef = useRef<Geography | null>(null);
-  const latest = useRef({ area, expanded, onSelect });
-  latest.current = { area, expanded, onSelect };
+  const overlay = useRef<HTMLCanvasElement>(null);
+  const latest = useRef({ area, expanded, onSelect, mode, answered, complete, onReady, onSnapshot });
+  latest.current = { area, expanded, onSelect, mode, answered, complete, onReady, onSnapshot };
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   const [attempt, setAttempt] = useState(0);
   const [grid, setGrid] = useState<Grid>(emptyGrid);
@@ -54,12 +57,12 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props)
       if (disposed || !container.current) return;
       dataRef.current = data;
       try {
-        map = new LibreMap({ container: container.current, style, center: [0, 15], zoom: 1, minZoom: .3, maxZoom: 9, attributionControl: false, dragRotate: false, pitchWithRotate: false, touchPitch: false, renderWorldCopies: true, cooperativeGestures: true });
+        map = new LibreMap({ container: container.current, style, center: [0, 15], zoom: 1, minZoom: .3, maxZoom: 9, attributionControl: false, dragRotate: false, pitchWithRotate: false, touchPitch: false, renderWorldCopies: true, cooperativeGestures: true, canvasContextAttributes: { preserveDrawingBuffer: latest.current.mode === 'quiz', antialias: true } });
         mapRef.current = map;
         const atlas = map;
         atlas.touchZoomRotate.disableRotation();
         atlas.keyboard.disableRotation();
-        atlas.getCanvas().setAttribute('aria-label', 'Interactive atlas. Arrow keys pan; plus and minus zoom. Select places using the searchable list.');
+        atlas.getCanvas().setAttribute('aria-label', latest.current.mode === 'quiz' ? 'Quiz atlas. Arrow keys pan; plus and minus zoom. Enter selects the country under the center crosshair.' : 'Interactive atlas. Arrow keys pan; plus and minus zoom. Select places using the searchable list.');
         const updateGrid = () => {
           cancelAnimationFrame(frame);
           frame = requestAnimationFrame(() => {
@@ -71,6 +74,7 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props)
             const latitude = gridValues(Math.max(-80, se.lat), Math.min(80, nw.lat), latStep).map(value => ({ value, position: atlas.project([atlas.getCenter().lng, value]).y })).filter(t => t.position >= 20 && t.position <= height - 30);
             setGrid({ width, height, longitude, latitude });
             setZoom(atlas.getZoom());
+            if (overlay.current) paintResolved(overlay.current, atlas, data, latest.current.answered, latest.current.complete);
           });
         };
         atlas.on('move', updateGrid);
@@ -86,7 +90,7 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props)
           for (const [id, width, color] of [['shallows', 10, '#b7ced1'], ['waterline', 7, '#a9c3c9'], ['coastal-rim', 4, '#c7dad9']] as const) atlas.addLayer({ id, type: 'line', source: 'places', paint: { 'line-color': color, 'line-width': width }, layout: { 'line-join': 'round' } });
           atlas.addLayer({ id: 'land', type: 'fill', source: 'places', paint: { 'fill-color': ['case', ['boolean', ['feature-state', 'selected'], false], ['get', 'color'], ['boolean', ['feature-state', 'active'], false], '#ecdfb9', '#b6c5bd'], 'fill-opacity': 1 } });
           atlas.addLayer({ id: 'boundaries', type: 'line', source: 'places', paint: { 'line-color': '#3a2c1d', 'line-width': .75, 'line-opacity': .75 }, layout: { 'line-join': 'round' } });
-          atlas.addLayer({ id: 'selection-border', type: 'line', source: 'places', paint: { 'line-color': '#2b2118', 'line-width': 1.6, 'line-opacity': ['case', ['boolean', ['feature-state', 'selected'], false], 1, 0] } });
+          atlas.addLayer({ id: 'selection-border', type: 'line', source: 'places', paint: { 'line-color': ['case', ['boolean', ['feature-state', 'hint'], false], '#c0362d', '#2b2118'], 'line-width': ['case', ['boolean', ['feature-state', 'hint'], false], 3, 1.6], 'line-opacity': ['case', ['any', ['boolean', ['feature-state', 'selected'], false], ['boolean', ['feature-state', 'hint'], false]], 1, 0] } });
           // All places get a source anchor, but only small shapes get an aid marker.
           const points = data.features.filter(feature => {
             const rings = feature.geometry.type === 'Polygon' ? feature.geometry.coordinates : feature.geometry.coordinates.flat();
@@ -97,12 +101,17 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props)
           }).map(feature => ({ type: 'Feature' as const, id: feature.id, properties: feature.properties, geometry: { type: 'Point' as const, coordinates: [feature.properties.longitude, feature.properties.latitude] } }));
           atlas.addSource('small-places', { type: 'geojson', promoteId: 'id', data: { type: 'FeatureCollection', features: points } });
           atlas.addLayer({ id: 'small-place-dots', type: 'circle', source: 'small-places', paint: { 'circle-radius': 4.5, 'circle-color': ['case', ['boolean', ['feature-state', 'selected'], false], ['get', 'color'], '#f8f0dc'], 'circle-stroke-color': '#3a2c1d', 'circle-stroke-width': 1, 'circle-opacity': ['case', ['boolean', ['feature-state', 'active'], false], .9, 0], 'circle-stroke-opacity': ['case', ['boolean', ['feature-state', 'active'], false], .9, 0] } });
-          atlas.on('click', event => {
-            const features = atlas.queryRenderedFeatures([[event.point.x - 5, event.point.y - 5], [event.point.x + 5, event.point.y + 5]], { layers: ['small-place-dots', 'land'] });
+          const chooseAt = (x: number, y: number) => {
+            const features = [
+              ...atlas.queryRenderedFeatures([[x - 5, y - 5], [x + 5, y + 5]], { layers: ['small-place-dots'] }),
+              ...atlas.queryRenderedFeatures([x, y], { layers: ['land'] }),
+            ];
             const places = features.map(f => data.features.find(place => place.id === f.id)?.properties).filter((p): p is Place => !!p);
             const place = places.find(p => inScope(p, latest.current.area, latest.current.expanded));
             latest.current.onSelect(place ?? null);
-          });
+          };
+          atlas.on('click', event => chooseAt(event.point.x, event.point.y));
+          atlas.getCanvas().addEventListener('keydown', event => { if (event.key === 'Enter' && latest.current.mode === 'quiz') { event.preventDefault(); chooseAt(atlas.getContainer().clientWidth / 2, atlas.getContainer().clientHeight / 2); } });
           atlas.on('mousemove', event => {
             atlas.getCanvas().style.cursor = atlas.queryRenderedFeatures(event.point, { layers: ['land', 'small-place-dots'] }).some(f => {
               const place = data.features.find(p => p.id === f.id)?.properties;
@@ -124,11 +133,29 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props)
     const map = mapRef.current, data = dataRef.current;
     if (phase !== 'ready' || !map || !data) return;
     for (const feature of data.features) {
-      const state = { active: inScope(feature.properties, area, expanded), selected: feature.id === selection?.place.id && inScope(feature.properties, area, expanded) };
+      const state = { active: inScope(feature.properties, area, expanded), selected: mode === 'quiz' ? answered.includes(feature.properties.id) : feature.id === selection?.place.id && inScope(feature.properties, area, expanded), hint: feature.id === hintId };
       map.setFeatureState({ source: 'places', id: feature.id }, state);
       map.setFeatureState({ source: 'small-places', id: feature.id }, state);
     }
-  }, [area, expanded, selection, phase]);
+    if (overlay.current) paintResolved(overlay.current, map, data, answered, complete);
+  }, [area, expanded, selection, phase, answered, complete, mode, hintId]);
+
+  useEffect(() => { latest.current.onReady?.(phase === 'ready'); if (phase === 'error' && complete) latest.current.onSnapshot?.(null); }, [phase, complete]);
+  useEffect(() => { if (fitRequest && phase === 'ready' && mapRef.current) fitArea(mapRef.current, area); }, [fitRequest, phase, area]);
+
+  useEffect(() => {
+    const map = mapRef.current, data = dataRef.current;
+    if (!complete || phase !== 'ready' || !map || !data) return;
+    let active = true;
+    const capture = () => {
+      if (!active || !overlay.current) return;
+      try { paintResolved(overlay.current, map, data, answered, true); latest.current.onSnapshot?.(captureMap(map, overlay.current)); }
+      catch { latest.current.onSnapshot?.(null); }
+    };
+    fitArea(map, area);
+    map.once('idle', capture); map.triggerRepaint();
+    return () => { active = false; map.off('idle', capture); };
+  }, [complete, phase, answered, area]);
 
   useEffect(() => { if (phase === 'ready' && mapRef.current) fitArea(mapRef.current, area); }, [area, phase]);
 
@@ -156,6 +183,8 @@ export function InteractiveAtlas({ area, expanded, selection, onSelect }: Props)
 
   return <div className="interactive-atlas" data-map-state={phase} data-map-zoom={zoom.toFixed(2)}>
     <div className="map-canvas" ref={container} />
+    <canvas ref={overlay} className="resolved-overlay" aria-hidden="true" />
+    {mode === 'quiz' && !complete ? <span className="map-crosshair" aria-hidden="true">+</span> : null}
     {phase !== 'ready' ? <div className="atlas-fallback"><AtlasMap area={area} /><p role="status" className="paper">{phase === 'loading' ? 'Unfolding the atlas…' : 'Interactive map unavailable. The overview is still here.'}{phase === 'error' ? <button onClick={() => setAttempt(value => value + 1)}>Try again</button> : null}</p></div> : null}
     {phase === 'ready' ? <svg className="coordinate-grid" viewBox={`0 0 ${grid.width} ${grid.height}`} aria-hidden="true">
       <g className="graticule-lines">{grid.longitude.map(t => <line key={`x${t.value}`} x1={t.position} x2={t.position} y1="0" y2={grid.height} />)}{grid.latitude.map(t => <line key={`y${t.value}`} x1="0" x2={grid.width} y1={t.position} y2={t.position} />)}</g>

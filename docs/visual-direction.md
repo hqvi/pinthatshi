@@ -68,6 +68,8 @@ Implement these with the real map and answer-state integration (v0.3/v0.4), then
 
 The interactive-atlas checkpoint now implements adaptive geographic gridlines and edge coordinates through the actual map projection, plus a selected-place plaque and shared map/sidebar color. Panning, zooming, and resizing update the overlay. The map remains north-up so its edges represent longitude and latitude consistently. Completed-map label collision handling and postcard capture still need real session integration. Continue comparing overall texture, coastline treatment, boundary detail, and type scale against the references; this is not a completed 1:1 claim.
 
+The first playable alpha now adds real answer plaques with collision handling, shared colored progress ticks, the measured completed-map depth canvas, and a captured-map postcard. The map fill, sidebar dot, plaque dot, progress tick, and thumbnail share a stable place color. Some fine texture and camera/framing differences remain; keep comparing actual play rather than labeling the entire application an exact match.
+
 1. Preserve the approved wireframes as the layout reference.
 2. Scaffold React, TypeScript, and Vite; turn the measured visual tokens into application styles and shared components.
 3. Match the Learn Countries area picker first: frame, sidebar proportions, fonts, dividers, card labels, and map framing.

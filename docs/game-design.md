@@ -1,6 +1,6 @@
 # pinthatshi: game design
 
-Status: Home, Games, area selection, and the interactive atlas are implemented. Places can be selected and explored, including overseas areas. The geography quiz is not playable yet; the source roster needs its final content audit before quiz integration.
+Status: v0.4.0-alpha.1 is the first playable Find Countries checkpoint. All 28 scopes support Countries/Countries & Areas, real answers, hints/skips, saved rounds, local perfect records, review, and completion postcards. The [roster policy](game-roster.md) freezes this version's coverage. Other game modes and remaining visual/device refinements are future work.
 
 ## The idea
 

@@ -14,7 +14,7 @@ The approved appearance includes behavior as well as colors. Completion should f
 | Silhouette answer | Reveal surrounding geography so the shape is connected to its real location. |
 | Flag answer | Confirm the correct place and reveal the flag inside its boundary while retaining a complete rectangular flag reference. |
 
-The [interaction lab](interaction-lab/index.html) implements the completion experiment, raised map edge, and normal flag images clipped into four geographic contexts. The application now includes area selection and interactive map exploration. Answer checking and the other game interactions remain future work. The prototype isn't proof that all Farflung timing, camera behavior, or physics has been matched.
+The [interaction lab](interaction-lab/index.html) preserves the original completion and flag-fill experiments. Find Countries now uses real answer state, collision-aware map labels, a hard 5/7 CSS-pixel red exterior depth layer, and a captured-map postcard with actual results. Answer feedback is immediate; the pointer-triggered postcard uses the approved 500ms transform/opacity entry, with a 160ms fade under reduced motion and no entry animation after a keyboard completion. Other game modes remain future work. This implementation is not a claim that every Farflung timing or camera detail has been matched.
 
 ## Motion requirements
 
@@ -39,8 +39,8 @@ Keep a larger full-detail flag available. Don't invent emblem details, replace l
 
 Inspected a live five-country round through completion and postcard reveal on 20 November 2026, then the current public rendering module. The effect is a separate `lc-print` canvas: the answered land union is offset down/right, and the original union plus its outline is removed, leaving the hard side face. The source chooses 5 CSS pixels below a 700px map width and 7px at wider widths, with the red accent at .82 alpha. The postcard capture includes this layer.
 
-The independent static preview uses an equivalent SVG mask with a 7-unit offset and .82 opacity, reused in both map views. Its offset scales with the illustration; the actual application's renderer must use the measured screen-pixel rule. This distinction remains part of final fidelity checking.
+The independent static preview uses an equivalent SVG mask with a 7-unit offset and .82 opacity. The playable application's canvas uses the measured 5/7 CSS-pixel rule, removes the original union plus its 1.4px outline, and includes that canvas in the captured postcard. Labels move to nearby clear positions or hide when crowded, while the Found/Revealed lists retain every name.
 
 ## Next integration step
 
-The React/TypeScript application now has an interactive atlas and area picker. Camera changes use a 350ms transition, or immediate updates with reduced motion; new moves interrupt previous ones through MapLibre. Explore controls remain available after geography loads. Next, audit the quiz roster and connect Find Countries prompts, answer state, and completion captures to the existing surfaces. Flag rendering joins real sessions in its own milestone.
+Find Countries now connects the atlas to live prompts, answers, review, records, and completion. Camera changes use a 350ms transition, or immediate updates with reduced motion. The next milestone adds country recall and identification; normal-image flag rendering joins real sessions in the flags milestone. Continue refining the common atlas surfaces rather than adding disconnected demos.

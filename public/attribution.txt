@@ -7,5 +7,5 @@ Terms: https://www.naturalearthdata.com/about/terms-of-use/
 These illustrations do not define final gameplay coverage or political status.
 Interactive atlas: MapLibre GL JS (BSD-3-Clause), bundled with its module worker.
 
-Fonts: VT323 and Bungee, distributed under their bundled SIL Open Font License notices in /licenses/.
+Fonts: VT323, Bungee, and Oswald, distributed under their bundled SIL Open Font License notices in /licenses/. Yellowtail retains its upstream license notice in /licenses/.
 Textures and application interface: independently implemented for pinthatshi.
