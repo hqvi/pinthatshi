@@ -4,11 +4,14 @@ import { continents, findArea, world, type Area } from './data/areas';
 import compass from '../docs/style-guide/sprites/compass.svg';
 import type { Selection } from './components/InteractiveAtlas';
 import type { Place } from './map/geography';
-import { ContinuePractice, StartRound } from './components/PracticeLinks';
-import { writeSession } from './game/storage';
+import { ContinuePractice } from './components/PracticeLinks';
+import { clearRound, readProgress, recordKey } from './game/storage';
+import { loadGeography, inScope, type Geography } from './map/geography';
+import { formatTime } from './game/session';
+import { SoundButton } from './components/SoundButton';
+import { playSound } from './game/sound';
 
 const InteractiveAtlas = lazy(() => import('./components/InteractiveAtlas').then(module => ({ default: module.InteractiveAtlas })));
-const PlacePicker = lazy(() => import('./components/PlacePicker').then(module => ({ default: module.PlacePicker })));
 const FindCountries = lazy(() => import('./components/FindCountries').then(module => ({ default: module.FindCountries })));
 
 type Screen = 'home' | 'games' | 'areas' | 'play';
@@ -23,10 +26,10 @@ function makeHash(route: Route) {
   return `#${path}?area=${route.area.id}&coverage=${route.expanded ? 'areas' : 'countries'}`;
 }
 
-function AreaCard({ area, selected, onSelect, wide = false }: { area: Area; selected: boolean; onSelect: (area: Area) => void; wide?: boolean }) {
-  return <button className={`area-card${wide ? ' area-card-wide' : ''}`} aria-pressed={selected} onClick={() => onSelect(area)}>
-    <span className="card-map"><AtlasMap area={area} colorful decorative /><span className="card-state">{selected ? 'Selected' : area.level === 'region' ? 'Region' : 'Full map'}</span></span>
-    <span className="card-label">{area.level === 'continent' ? `All ${area.name}` : area.name}<span aria-hidden="true">{selected ? '●' : '○'}</span></span>
+function AreaCard({ area, onSelect, wide = false, count, best, resume, geography, expanded }: { area: Area; onSelect: (area: Area) => void; wide?: boolean; count?: number; best?: number | null; resume?: boolean; geography?: Geography | null; expanded: boolean }) {
+  return <button className={`area-card${wide ? ' area-card-wide' : ''}`} onClick={() => onSelect(area)} aria-label={`${resume ? 'Continue' : 'Play'} ${area.name}${count === undefined ? '' : `, ${count} places`}`}>
+    <span className="card-map"><AtlasMap area={area} colorful decorative geography={geography} expanded={expanded} />{best != null || resume ? <span className={`card-state${best != null ? ' perfect-badge' : ''}`}>{best != null ? `Perfect ${formatTime(best)}` : 'Continue'}</span> : null}</span>
+    <span className="card-label">{area.name}<span>{count ?? '…'}</span></span>
   </button>;
 }
 
@@ -37,7 +40,25 @@ const futureGames = [
 ];
 
 export function App() {
+  useEffect(() => {
+    const click = (event: MouseEvent) => {
+      const button = event.target instanceof Element ? event.target.closest('button') : null;
+      if (button && !button.disabled && !button.matches('.sound-control,.hint-button,.area-card')) playSound('click');
+    };
+    document.addEventListener('click', click);
+    return () => document.removeEventListener('click', click);
+  }, []);
   const [route, setRoute] = useState<Route>(readRoute);
+  const [geography, setGeography] = useState<Geography | null>(null);
+  const [progress, setProgress] = useState(readProgress);
+  const [geographyFailed, setGeographyFailed] = useState(false);
+  const [geographyAttempt, setGeographyAttempt] = useState(0);
+  useEffect(() => {
+    if (route.screen !== 'areas' || geography) return;
+    let active = true; setGeographyFailed(false);
+    loadGeography().then(data => { if (active) setGeography(data); }).catch(() => { if (active) setGeographyFailed(true); });
+    return () => { active = false; };
+  }, [route.screen, geography, geographyAttempt]);
   const [selection, setSelection] = useState<Selection>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
@@ -48,6 +69,7 @@ export function App() {
     return () => window.removeEventListener('hashchange', sync);
   }, []);
   useEffect(() => {
+    setProgress(readProgress());
     document.title = `${route.screen === 'home' ? 'A little more of the world' : route.screen === 'games' ? 'Play & Learn' : `Learn Countries · ${route.area.name}`} · pinthatshi`;
     if (!firstRender.current && previousScreen.current !== route.screen) {
       heading.current?.focus();
@@ -58,20 +80,19 @@ export function App() {
   }, [route.screen, route.area.name]);
   const updateRoute = (next: Route) => { setSelection(null); setRoute(next); window.location.hash = makeHash(next); };
   const navigate = (screen: Screen) => updateRoute({ ...route, screen });
-  const showMapOnPhone = () => { if (window.matchMedia('(max-width: 760px)').matches) document.querySelector('.map-stage')?.scrollIntoView({ block: 'start' }); };
-  const selectArea = (area: Area) => { updateRoute({ ...route, area }); showMapOnPhone(); };
-  const selectPlace = (place: Place | null, focus = false) => { setSelection(previous => place ? { place, focus, revision: (previous?.revision ?? 0) + 1 } : null); if (focus) showMapOnPhone(); };
-  const startRound = (fresh: boolean, area = route.area) => { if (fresh) writeSession(null); updateRoute({ ...route, area, screen: 'play' }); };
+  const selectPlace = (place: Place | null) => setSelection(previous => place ? { place, focus: false, revision: (previous?.revision ?? 0) + 1 } : null);
+  const startRound = (fresh: boolean, area = route.area) => { if (fresh) clearRound(area.id, route.expanded); playSound('entry'); updateRoute({ ...route, area, screen: 'play' }); };
+  const card = (area: Area, wide = false) => <AreaCard key={area.id} area={area} wide={wide} geography={geography} expanded={route.expanded} count={geography?.features.filter(f => inScope(f.properties, area, route.expanded)).length} best={progress.records[recordKey(area.id, route.expanded)]?.perfectBestMs} resume={!!progress.rounds[recordKey(area.id, route.expanded)]} onSelect={area => startRound(false, area)} />;
   const backLabel = route.screen === 'play' ? 'Areas' : route.screen === 'areas' ? 'Games' : 'Home';
 
   return <>
     <a href="#main-content" className="skip-link" onClick={e => { e.preventDefault(); document.querySelector<HTMLElement>('h1[tabindex]')?.focus(); }}>Skip to content</a>
     <main id="main-content" className={`atlas-book screen-${route.screen}`}>
-      <header className="book-header">
+      {route.screen !== 'areas' && route.screen !== 'play' ? <header className="book-header">
         {route.screen === 'home' ? <span className="edition">Your geography playground</span> : <button className="back-button" onClick={() => navigate(route.screen === 'play' ? 'areas' : route.screen === 'areas' ? 'games' : 'home')}><span className="back-mark" aria-hidden="true">‹</span><span><small>Back to</small>{backLabel}</span></button>}
         <button className="small-wordmark" onClick={() => navigate('home')} aria-label="pinthatshi home">pinthatshi</button>
-        <span className="edition">{route.screen === 'areas' || route.screen === 'play' ? 'Find Countries' : 'World atlas'}</span>
-      </header>
+        <span className="edition">World atlas</span>
+      </header> : null}
 
       {route.screen === 'home' ? <section className="home-scene" aria-labelledby="home-title">
         <div className="home-atlas"><AtlasMap area={world} decorative /></div>
@@ -83,14 +104,21 @@ export function App() {
         <div className="collections">{futureGames.map((collection, i) => <article className="collection paper" key={collection.name}><div className="collection-art"><AtlasMap area={continents[i * 2].area} colorful decorative /><span>{collection.name}</span></div><div className="collection-content"><h2>{collection.name}</h2><p>{collection.description}</p>{i === 0 ? <button className="mode-button" onClick={() => navigate('areas')}><strong>Find Countries</strong><span>Choose a region to explore</span></button> : null}<ul>{collection.modes.map(mode => <li key={mode}>{mode}</li>)}</ul><span className="planned-label">{i === 0 ? 'More country games planned' : 'Planned collection'}</span></div></article>)}</div>
         <div className="library-bottom"><article><span className="eyebrow">Country packs · planned</span><h2>Closer to home</h2><p>Philippine regions and provinces first.<br />USA and UK follow.</p></article><article><span className="eyebrow">Practice · planned</span><h2>Review Mistakes</h2><p>Revisit the places you’re still learning.</p></article></div>
       </section> : route.screen === 'play' ? <Suspense fallback={<p className="quiz-loading">Opening Find Countries…</p>}><FindCountries key={`${route.area.id}:${route.expanded}`} area={route.area} expanded={route.expanded} onExit={() => navigate('areas')} onNext={area => startRound(true, area)} /></Suspense> : <section className="area-layout" aria-labelledby="areas-title">
-        <div className="map-stage"><Suspense fallback={<AtlasMap area={route.area} />}><InteractiveAtlas area={route.area} expanded={route.expanded} selection={selection} onSelect={place => selectPlace(place)} /></Suspense><div className="map-caption paper"><span className="eyebrow">Explore the atlas</span><strong>{route.area.name}</strong><span>{route.expanded ? 'Countries & Areas' : 'Countries'}</span></div><img className="compass" src={compass} width="48" height="48" alt="" /></div>
-        <aside className="area-panel paper"><div className="panel-intro"><h1 ref={heading} id="areas-title" tabIndex={-1}>Learn Countries</h1><p>Explore a region, a continent, or the whole world.</p><label className="coverage-option"><input type="checkbox" checked={route.expanded} onChange={e => updateRoute({ ...route, expanded: e.target.checked })} /><span>Include territories & overseas areas<small>Countries & Areas</small></span></label></div>
-          <div className="selection-readout" role="status"><span className="eyebrow">{selection ? 'Selected place' : 'Your area'}</span><strong>{selection ? <><i className="place-dot" style={{ backgroundColor: selection.place.color }} />{selection.place.name}</> : route.area.name}</strong><span>{selection?.place.kind === 'area' ? `Area · ${selection.place.parent || selection.place.region}` : 'Explore the map, or start a round.'}</span></div>
-          <StartRound area={route.area} expanded={route.expanded} onStart={startRound} />
-          <div className="area-scroll"><details className="explore-places"><summary>Explore places in this area</summary><Suspense fallback={<p>Loading place search…</p>}><PlacePicker area={route.area} expanded={route.expanded} onSelect={place => selectPlace(place, true)} /></Suspense></details>{continents.map(continent => <section className="continent-section" key={continent.area.id} aria-labelledby={`heading-${continent.area.id}`}><h2 id={`heading-${continent.area.id}`}>{continent.name}</h2><div className="area-grid">{continent.regions.map(area => <AreaCard key={area.id} area={area} selected={route.area.id === area.id} onSelect={selectArea} />)}<AreaCard area={continent.area} selected={route.area.id === continent.area.id} onSelect={selectArea} wide /></div></section>)}<section className="continent-section" aria-labelledby="heading-world"><h2 id="heading-world">Everything</h2><AreaCard area={world} selected={route.area.id === world.id} onSelect={selectArea} wide /></section></div>
+        <div className="map-stage"><Suspense fallback={<AtlasMap area={world} />}><InteractiveAtlas area={world} expanded={route.expanded} selection={selection} onSelect={selectPlace} /></Suspense></div>
+        <aside className="area-panel paper">
+          <div className="panel-nav"><button className="back-button" onClick={() => navigate('games')}><span className="back-mark" aria-hidden="true">‹</span><span><small>Back to</small>Games</span></button><SoundButton /></div>
+          <div className="area-scroll">
+            <div className="panel-intro"><h1 ref={heading} id="areas-title" tabIndex={-1}>Learn Countries</h1><p>Learn the countries of the world.</p>
+              {geographyFailed ? <p role="status">Place totals could not load. <button className="text-action" onClick={() => setGeographyAttempt(n => n + 1)}>Retry place list</button></p> : null}<div className="overview-card"><AtlasMap area={world} colorful decorative geography={geography} expanded={route.expanded} /><div><span>{geography ? geography.features.filter(f => (route.expanded || f.properties.kind === 'country') && progress.learned.includes(f.properties.id)).length : 0} learned</span><span>{geography ? geography.features.filter(f => route.expanded || f.properties.kind === 'country').length : '…'} places · {continents.reduce((n, c) => n + c.regions.length + 1, 1)} maps</span></div></div>
+              <p className="overview-note">Pick a map to begin. Your progress and best times stay in this browser.</p>
+              <label className="coverage-option"><input type="checkbox" checked={route.expanded} onChange={e => updateRoute({ ...route, expanded: e.target.checked })} /><span>Include territories & overseas areas</span></label>
+            </div>
+            {[...continents].sort((a, b) => ['north-america','south-america','europe','asia','africa','oceania'].indexOf(a.area.id) - ['north-america','south-america','europe','asia','africa','oceania'].indexOf(b.area.id)).map(continent => <section className="continent-section" key={continent.area.id} aria-labelledby={`heading-${continent.area.id}`}><h2 id={`heading-${continent.area.id}`}>{continent.name}</h2><div className="area-grid">{continent.regions.map(area => card(area))}{card(continent.area, true)}</div></section>)}
+            <section className="continent-section" aria-labelledby="heading-world"><h2 id="heading-world">Everything</h2>{card(world, true)}</section>
+          </div>
         </aside>
       </section>}
-      <footer className="book-footer"><span>pinthatshi · atlas edition</span><span>Find Countries · early playable</span></footer>
+      {route.screen !== 'areas' && route.screen !== 'play' ? <footer className="book-footer"><span>pinthatshi · atlas edition</span><span>Find Countries · early playable</span></footer> : null}
     </main>
   </>;
 }

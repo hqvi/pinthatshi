@@ -75,3 +75,26 @@ test('crowded country plaques move or hide instead of overlapping or leaving the
   assert.ok(second.y + second.height <= first.y || first.y + first.height <= second.y);
   assert.equal(findLabelRect(-50, -50, 80, 22, 500, 400, []), null);
 });
+
+test('unfinished maps survive switching region and coverage, and completion clears only its own slot', () => {
+  let raw = null; const store = { getItem: () => raw, setItem: (_, value) => { raw = value; } };
+  const one = answer(fresh(), 'AAA');
+  const two = { ...fresh(), id: 'other', scopeId: 'other', expanded: false };
+  writeSession(one, store); writeSession(two, store);
+  let progress = readProgress(store);
+  assert.equal(progress.rounds[recordKey('example', true)].answers.length, 1);
+  assert.equal(progress.rounds[recordKey('other', false)].id, 'other');
+  let complete = one; for (const id of complete.order) complete = answer(complete, id);
+  writeSession(complete, store); progress = readProgress(store);
+  assert.equal(progress.rounds[recordKey('example', true)], undefined);
+  assert.equal(progress.rounds[recordKey('other', false)].id, 'other');
+  assert.deepEqual(progress.learned.sort(), ['AAA', 'BBB', 'CCC']);
+});
+test('old saves migrate without inventing learned countries from a run counter', () => {
+  const old = { version: 1, active: fresh(), records: { old: { runs: 20, perfectBestMs: null } }, recordedIds: [] };
+  const store = { getItem: () => JSON.stringify(old), setItem() {} };
+  const progress = readProgress(store);
+  assert.deepEqual(progress.learned, []);
+  assert.equal(progress.rounds[recordKey('example', true)].id, old.active.id);
+  assert.equal(progress.records.old.runs, 20);
+});

@@ -5,7 +5,7 @@ import { formatTime, type Session } from '../game/session';
 import { readProgress, recordKey } from '../game/storage';
 
 export function ContinuePractice({ onContinue }: { onContinue: (session: Session) => void }) {
-  const [active] = useState(() => readProgress().active);
+  const [active] = useState(() => { const progress = readProgress(); return progress.active?.status === 'playing' ? progress.active : Object.values(progress.rounds).at(-1) ?? null; });
   return active?.status === 'playing' ? <button className="continue-practice" onClick={() => onContinue(active)}>Continue {active.review ? 'review' : findArea(active.scopeId).name} · {active.answers.length}/{active.order.length}</button> : null;
 }
 export function StartRound({ area, expanded, onStart }: { area: Area; expanded: boolean; onStart: (fresh: boolean) => void }) {

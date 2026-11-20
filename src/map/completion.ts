@@ -72,7 +72,7 @@ export function paintResolved(canvas: HTMLCanvasElement, map: LibreMap, data: Ge
   }
 }
 
-export function captureMap(map: LibreMap, overlay: HTMLCanvasElement): string {
+export function captureMap(map: LibreMap, overlay: HTMLCanvasElement, waves?: HTMLCanvasElement | null): string {
   const width = map.getContainer().clientWidth, height = map.getContainer().clientHeight;
   const output = document.createElement('canvas');
   const ratio = Math.min(devicePixelRatio || 1, 2);
@@ -80,10 +80,11 @@ export function captureMap(map: LibreMap, overlay: HTMLCanvasElement): string {
   const ctx = output.getContext('2d');
   if (!ctx) throw new Error('Map capture unavailable');
   ctx.scale(ratio, ratio); ctx.drawImage(map.getCanvas(), 0, 0, width, height);
+  if (waves) ctx.drawImage(waves, 0, 0, width, height);
   const nw = map.unproject([0, 0]), se = map.unproject([width, height]);
   const longitude = gridValues(nw.lng, se.lng, gridStep(se.lng - nw.lng, width));
   const latitude = gridValues(Math.max(-80, se.lat), Math.min(80, nw.lat), gridStep(nw.lat - se.lat, height));
-  ctx.strokeStyle = '#2b21182e'; ctx.lineWidth = .6; ctx.setLineDash([1, 4]);
+  ctx.strokeStyle = '#3a2c1d4d'; ctx.lineWidth = 1; ctx.setLineDash([1, 3]);
   ctx.font = '13px VT323, monospace'; ctx.fillStyle = '#2b2118';
   for (const value of longitude) { const x = map.project([value, 0]).x; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); ctx.textAlign = 'center'; if (x > 35 && x < width - 20) ctx.fillText(coordinateLabel(value, false), x, height - 7); }
   for (const value of latitude) { const y = map.project([map.getCenter().lng, value]).y; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); ctx.textAlign = 'left'; if (y > 20 && y < height - 30) ctx.fillText(coordinateLabel(value, true), 5, y + 4); }

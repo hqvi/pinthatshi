@@ -5,10 +5,10 @@ export function coordinateLabel(value: number, latitude: boolean): string {
   const normalized = latitude ? value : normalizeLongitude(value);
   const magnitude = Math.abs(normalized);
   const degrees = Number(magnitude.toFixed(2));
-  return `${degrees}°${degrees === 0 ? '' : latitude ? normalized < 0 ? 'S' : 'N' : normalized < 0 ? 'W' : 'E'}`;
+  return `${degrees}°${degrees === 0 || (!latitude && degrees === 180) ? '' : latitude ? normalized < 0 ? 'S' : 'N' : normalized < 0 ? 'W' : 'E'}`;
 }
 export function gridStep(span: number, pixels: number): number {
-  const minimum = span * 85 / Math.max(1, pixels);
+  const minimum = span * 46 / Math.max(1, pixels);
   return [.1, .2, .5, 1, 2, 5, 10, 15, 30, 45, 90].find(step => step >= minimum) ?? 90;
 }
 export function gridValues(minimum: number, maximum: number, step: number): number[] {

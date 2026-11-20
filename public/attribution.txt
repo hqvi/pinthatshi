@@ -9,3 +9,8 @@ Interactive atlas: MapLibre GL JS (BSD-3-Clause), bundled with its module worker
 
 Fonts: VT323, Bungee, and Oswald, distributed under their bundled SIL Open Font License notices in /licenses/. Yellowtail retains its upstream license notice in /licenses/.
 Textures and application interface: independently implemented for pinthatshi.
+
+Coastlines: Natural Earth v5.1.2, 1:50m Physical Coastline (public domain).
+https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_coastline.geojson
+Optional detail tiles: OpenFreeMap, copyright OpenMapTiles and OpenStreetMap contributors.
+https://openfreemap.org/ | https://openmaptiles.org/ | https://www.openstreetmap.org/copyright

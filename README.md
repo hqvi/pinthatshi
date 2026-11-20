@@ -6,7 +6,7 @@ Find countries, remember capitals, recognize flags, and eventually learn the reg
 
 ## Where the project is now
 
-**First playable alpha — v0.4.0-alpha.1.** Find Countries works across 28 region, continent, and world scopes. Choose Countries (197 worldwide) or Countries & Areas (253), start a round, and find each named place on the atlas. Hints, reveal/skip, results, review, replay, and local perfect-time records are connected to real session state.
+**UI/UX polish alpha — v0.5.0-alpha.1.** Find Countries works across 28 region, continent, and world scopes. Choose Countries (197 worldwide) or Countries & Areas (253), click a region card to start or resume, and find each named place on the atlas. Hints, reveal/skip, results, review, replay, and local perfect-time records are connected to real session state.
 
 - [Game design and complete mode catalog](docs/game-design.md)
 - [Playable roster and session rules](docs/game-roster.md)
@@ -29,13 +29,19 @@ npm run dev
 
 Open the local URL printed in the terminal. `npm run build` checks TypeScript and creates the production files in `dist/`. `npm run preview` serves that build locally. The app uses bundled fonts and atlas illustrations; it needs no account or API key.
 
-The area screen now uses MapLibre with bundled Natural Earth geometry, without external tiles or API keys. Drag or use arrow keys to pan; use the buttons, keyboard plus/minus, or Ctrl+wheel to zoom. Touch interaction uses two fingers so scrolling the page remains possible. The coverage toggle filters selectable places; out-of-scope geography stays visible as context. Search is scope-specific and also provides keyboard access to tiny places, which have circular selection aids on the map.
+The Learn Countries screen keeps the atlas fixed while its paper sidebar scrolls. A region card starts or resumes that map directly. Drag or use arrow keys to pan; use the wheel without Ctrl, the zoom buttons, or keyboard plus/minus to zoom. Pinch zoom works on touch devices. Enter answers at the center crosshair, visible when the map has keyboard focus; Space gives a hint. Round options contain pause, reveal/skip, hide timer, and restart.
 
-Home and card thumbnails remain static illustrations. If interactive rendering fails, an overview and retry action stay available. The [253-place checklist](docs/geography-checklist.md) and [roster policy](docs/game-roster.md) publish this version's exact grouping and geographic choices. Answered places get collision-aware plaques; completed maps and postcards include the hard red depth edge. The postcard captures the actual rendered map and your results. Visual matching and broader device/performance refinements remain in progress.
+The renderer uses bundled Natural Earth v5.1.2 1:50m country, map-unit, and coastline geometry. Hover and answer checks use the displayed polygons; small places have circular selection aids. This is generalized atlas geometry, rather than street-level or cadastral boundary data. Separate coastlines keep shores solid and inland boundaries dash-dotted. Adaptive coordinate grids and world-anchored procedural horizontal waves replace the old repeating wave bitmap.
 
-The current round saves locally and resumes after refresh or through Continue on Home. Perfect times require a complete full-scope round without mistakes, hints, or skips. Review rounds cannot replace full-map records. The timer pauses when the tab is hidden, the map is unavailable, or you press Pause. Keyboard users can pan with arrow keys and press Enter to answer at the crosshair. Search remains available in exploration, rather than providing answers during the quiz. Local storage belongs to the browser/origin; this alpha has no account or cross-device sync.
+Optional OpenFreeMap/OpenMapTiles details add lakes, rivers, and roads at closer zooms. No API key is required; network access is needed for these detail tiles. Local country geometry remains playable when optional tiles fail. Country/city answer labels are deliberately absent. Compact map credits link the required source attribution.
 
-`npm test` runs 17 checks for geography, coordinate wrapping, every scope/coverage combination, scoring, hints/skips, review, save validation, record separation, and label layout. GitHub Actions runs these checks alongside the production build.
+Region cards, country plaques, sidebar dots, progress ticks, and postcards share one deterministic per-map palette. Completed maps retain their offset red edge. A captured map fills the postcard title and picture; pointer completion holds the map briefly before the postcard and stamp arrive. Keyboard completion is immediate; reduced motion removes positional entrances and compass wobble. The fine compass needle reacts to horizontal panning and settles north. A custom pixel pushpin cursor is limited to the map. Flags remain full-detail images.
+
+Synthesized sound cues cover UI clicks, entry, correct/wrong answers, hints, paper, and stamps. Sound starts after a user gesture. Mute persists locally and audio suspends when the tab is hidden.
+
+Unfinished rounds save separately by region and coverage, preserving old version-1 saves and perfect-time records. Learned totals count actual found places, including assisted answers; revealed/skipped answers do not count as learned. Perfect times require a complete full-scope round without mistakes, hints, or skips. Review cannot replace full-map records. The timer pauses while the tab is hidden, the map is unavailable, or the round is paused. Storage is specific to this browser/origin; no account or cross-device sync exists yet.
+
+`npm test` runs 20 checks covering geography, adaptive grids, every scope/coverage combination, palette consistency, scoring, review, save migration, independent region saves, records, and label layout. GitHub Actions runs tests and production builds when changes are eventually pushed.
 
 ## Open the original design previews
 
@@ -65,7 +71,7 @@ Later versions add country recall, capitals, flags, mistake review, and country 
 
 React, TypeScript, and Vite run the application. Shared components render the atlas and area cards; URL state controls navigation and area selection. MapLibre, its worker, and the bundled geographic data load when the area screen is opened. The original plain HTML design previews remain available separately.
 
-Each step gets an explanation, a working change, a check, and a focused Git commit. Releases mark milestones; the smaller commits show how we got there.
+Each verified step gets a focused local Git commit. **Do not push development checkpoints.** Remote pushes are reserved for the finished, complete final game, per the project owner’s instruction. See [development workflow](docs/development-workflow.md).
 
 ## References and data
 

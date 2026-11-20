@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { coordinateLabel, gridStep, gridValues, longitudeInterval } from '../src/map/grid.ts';
 import { inScope, normalizeAnswer } from '../src/map/scope.ts';
+import { scopeColors, palette } from '../src/map/palette.ts';
 import { allAreas, findArea, world } from '../src/data/areas.ts';
 
 const geography = JSON.parse(await readFile(new URL('../src/assets/places.geojson', import.meta.url), 'utf8'));
@@ -18,7 +19,7 @@ test('longitude labels wrap correctly on both sides of the date line', () => {
 test('grid spacing adapts without overlapping edge labels', () => {
   for (const [span, pixels] of [[360, 1200], [40, 390], [2, 800], [150, 350]]) {
     const step = gridStep(span, pixels);
-    assert.ok(step * pixels / span >= 84.9);
+    assert.ok(step * pixels / span >= 45.9);
     const values = gridValues(-span / 2, span / 2, step);
     assert.ok(values.every(Number.isFinite));
     assert.ok(values.length <= 100);
@@ -69,4 +70,16 @@ test('the published game roster has 197 countries and 56 areas, without misleadi
   for (const id of ['KOS', 'PSX', 'VAT', 'TWN']) { assert.equal(get(id).kind, 'country'); assert.equal(get(id).parent, ''); }
   assert.equal(get('SOL').kind, 'area');
   assert.equal(get('GUF').parent, 'France');
+});
+
+test('scope palettes are deterministic, complete and do not change source geography', () => {
+  const before = JSON.stringify(geography);
+  const area = findArea('central-asia');
+  const first = scopeColors(geography, area, false);
+  assert.equal(first.size, 5);
+  assert.deepEqual(first, scopeColors(geography, area, false));
+  assert.ok([...first.values()].every(color => palette.includes(color)));
+  assert.ok(new Set(first.values()).size >= 4);
+  assert.equal(JSON.stringify(geography), before);
+  assert.equal(coordinateLabel(180, false), '180°');
 });
