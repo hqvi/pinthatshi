@@ -6,7 +6,7 @@ Find countries, remember capitals, recognize flags, and eventually learn the reg
 
 ## Where the project is now
 
-**v0.1: planning and wireframes.** The game is not playable yet. This checkpoint defines what we're building and lets us walk through the main screens before implementing the map and game rules.
+**v0.2 in progress: the application has started.** The React application includes Home, the game library, and Learn Countries area selection. Select any of the 28 region, continent, or world previews; refresh or navigate back without losing the area and coverage setting. Geography answers and scoring arrive later.
 
 - [Game design and complete mode catalog](docs/game-design.md)
 - [Version roadmap and how we'll build](docs/roadmap.md)
@@ -17,7 +17,20 @@ Find countries, remember capitals, recognize flags, and eventually learn the reg
 - [UX and motion requirements](docs/ux-motion.md)
 - [Farflung design inspection](docs/farflung-design-audit.md)
 
-## Open the wireframes
+## Run the application
+
+Use Node.js 22.12 or newer and npm:
+
+```sh
+npm ci
+npm run dev
+```
+
+Open the local URL printed in the terminal. `npm run build` checks TypeScript and creates the production files in `dist/`. `npm run preview` serves that build locally. The app uses bundled fonts and atlas illustrations; it needs no account or API key.
+
+The current map is an independently sourced static overview. The coverage toggle records your preference; it does not yet filter a playable place list. MapLibre interaction, geographic gridlines, coordinate labels, country plaques, and shared answer colors are tracked for v0.3/v0.4. This is an application checkpoint, not the completed v0.2 release or the final map renderer.
+
+## Open the original design previews
 
 Open [docs/wireframes/index.html](docs/wireframes/index.html) in a browser. It works without installing packages or connecting to a service.
 
@@ -43,7 +56,7 @@ Later versions add country recall, capitals, flags, mistake review, and country 
 
 ## Build approach
 
-React, TypeScript, Vite, and MapLibre are the planned application foundation. This initial checkpoint uses plain HTML, CSS, and JavaScript so the screen flow can be reviewed before the application is scaffolded.
+React, TypeScript, and Vite now run the application. Shared components render the atlas and area cards; URL state controls navigation and area selection. MapLibre is planned for the interactive geography milestone. The original plain HTML design previews remain available separately.
 
 Each step gets an explanation, a working change, a check, and a focused Git commit. Releases mark milestones; the smaller commits show how we got there.
 
@@ -52,3 +65,7 @@ Each step gets an explanation, a working change, a check, and a focused Git comm
 The Farflung reference guides visual and interaction design. The implementation will use our own application code and independently sourced geography. Data and asset sources, attribution, and applicable licenses will be documented as they are introduced. No Farflung application bundles, custom artwork, or datasets are included in this repository.
 
 Country and area totals will come from a published, versioned content checklist. Wireframe examples do not establish final geographic coverage.
+
+The app's overview artwork uses [Natural Earth v5.1.2 1:50m countries](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_50m_admin_0_countries.geojson), which is public-domain cartography. It does not establish the final place checklist or region membership. To regenerate the bundled illustration, download that GeoJSON and run `node scripts/create-atlas-art.mjs <path-to-geojson>`; normal installs and builds use the committed artwork and need no download. Pacific framing and small-place visibility will be resolved with the interactive renderer.
+
+Upstream font notices are retained in `docs/style-guide/fonts/` and copied to `public/licenses/` for inclusion in builds. GitHub Actions runs the TypeScript and production-build checks on pushes and pull requests.

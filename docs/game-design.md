@@ -1,6 +1,6 @@
 # pinthatshi: game design
 
-Status: wireframe layout approved; visual reference established. The playable application has not started.
+Status: wireframe layout approved; visual reference established; React application started with Home, Games, and area selection. The geography quiz is not playable yet.
 
 ## The idea
 

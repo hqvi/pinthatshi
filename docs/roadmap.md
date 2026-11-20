@@ -43,6 +43,8 @@ Versions describe order and scope, not promised dates. Don't add later features 
 3. Establish the frame, typography, panel components, and responsive layout.
 4. Add the real map and atlas effects, comparing world and regional screenshots.
 
+The first v0.2 application checkpoint implements Home, Games, and the Learn Countries area picker with static atlas framing. The next checkpoint replaces the overview with the interactive map; v0.2 is not tagged complete yet. The user's requested graticule, edge coordinates, country plaques, and shared answer colors are explicitly recorded in [visual direction](visual-direction.md#map-details-reserved-for-the-interactive-renderer) for v0.3/v0.4.
+
 ## Release checks
 
 - Compare relevant screens at the reference desktop size and at a narrow mobile width.
@@ -94,3 +96,13 @@ Hosting is a later milestone. The initial source of truth is this GitHub reposit
 - Removed active flag-grid conversion, switched the visual sheet to clean flag images, and added four contextual country-shaped flag previews with a full-flag reference.
 - Updated static preview geometry to Natural Earth v5.1.2 1:50m. Application coverage and exact screen-pixel rendering remain separate milestones.
 - Verified the shared raised map in the completion postcard, all four flag switches and outline toggles, phone layout, and clean reference images. Syntax, local HTML links, exact embedded flag sources, image coverage, and aspect ratios pass checks; no browser console errors were observed.
+
+### 2026-11-20 — First application checkpoint
+
+- Recorded the user's map fidelity checklist and their approval to finish those details with the real map instead of delaying the application screens.
+- Added React, TypeScript, Vite, a dependency lockfile, and npm scripts for local development, checking, building, and previews.
+- Built Home → Games → Learn Countries area selection, retaining the approved parchment palette, fonts, frame, atlas textures, and small compass sprite.
+- Added 28 display scopes across six continents, their subregions, and the world. These bounds frame illustrations; they are not gameplay membership, final coverage, or country counts.
+- Area and coverage state travel in the URL and survive refresh, Back navigation, and returning from Games. Unknown area identifiers safely show the world. Future modes are labeled planned and do not pretend to start a quiz.
+- Bundled independent Natural Earth v5.1.2 1:50m illustrations; preserved font notices in production assets. Added GitHub Actions for TypeScript and build checks.
+- Local production build and dependency audit pass (zero reported vulnerabilities). Browser checks passed Home → Games → Areas, every continent plus world selection, coverage toggles, refresh/navigation persistence, focus/skip link, and 390px layouts without horizontal overflow. No browser console errors were observed.
